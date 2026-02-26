@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
 import { LessonLayout, StepController } from "@viz/ui";
 
@@ -15,7 +15,6 @@ const STEPS = ["intro", "js", "ts", "types", "zod", "checks", "safe"] as const;
 
 export default function TypesPage() {
   const t = useTranslations();
-  const locale = useLocale();
   const [s, setS] = useState(0);
   return (
     <LessonLayout

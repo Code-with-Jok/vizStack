@@ -1,3 +1,5 @@
+"use client";
+
 import { ReactNode, useState } from "react";
 import dynamic from "next/dynamic";
 import { Allotment } from "allotment";
@@ -59,9 +61,12 @@ export function WalkthroughLayout({
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const vi = locale === "vi";
   const totalChapters = chapters.length;
-  const progress =
-    totalChapters > 0 ? ((activeChapter + 1) / totalChapters) * 100 : 0;
-  const currentChapter = chapters[activeChapter];
+  const hasChapters = totalChapters > 0;
+  const safeChapter = hasChapters
+    ? Math.min(Math.max(activeChapter, 0), totalChapters - 1)
+    : 0;
+  const progress = hasChapters ? ((safeChapter + 1) / totalChapters) * 100 : 0;
+  const currentChapter = hasChapters ? chapters[safeChapter] : undefined;
 
   return (
     <div
@@ -75,6 +80,9 @@ export function WalkthroughLayout({
       {/* Sidebar Toggle Button */}
       <button
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        aria-label={isSidebarOpen ? "Collapse table of contents" : "Expand table of contents"}
+        aria-expanded={isSidebarOpen}
+        aria-controls="walkthrough-toc"
         style={{
           position: "absolute",
           top: "12px",
@@ -103,7 +111,7 @@ export function WalkthroughLayout({
         <Allotment defaultSizes={[200, 440, 680]}>
           {/* TOC Pane */}
           <Allotment.Pane visible={isSidebarOpen} minSize={150}>
-            <aside
+            <aside id="walkthrough-toc"
               style={{
                 height: "100%",
                 borderRight: "1px solid var(--color-border)",
@@ -183,7 +191,7 @@ export function WalkthroughLayout({
                         lineHeight: 1.2,
                         marginBottom: "10px",
                         background:
-                          "linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-purple))",
+                          "linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-orange-warm))",
                         WebkitBackgroundClip: "text",
                         WebkitTextFillColor: "transparent",
                       }}
@@ -218,9 +226,9 @@ export function WalkthroughLayout({
                       {vi ? currentChapter.title_vi : currentChapter.title_en}
                     </h2>
 
-                    {/* Block-based Content */}
                     <div style={{ display: "flex", flexDirection: "column" }}>
                       <BlockEditor
+                        key={currentChapter._id}
                         editable={false}
                         initialContent={vi ? currentChapter.content_vi : currentChapter.content_en}
                         onChange={() => {}}
@@ -308,7 +316,7 @@ export function WalkthroughLayout({
                 width: `${progress}%`,
                 height: "100%",
                 background:
-                  "linear-gradient(90deg, var(--color-accent-cyan), var(--color-accent-purple))",
+                  "linear-gradient(90deg, var(--color-accent-cyan), var(--color-accent-orange-warm))",
                 transition: "width 0.3s ease",
               }}
             />
@@ -321,7 +329,7 @@ export function WalkthroughLayout({
               whiteSpace: "nowrap",
             }}
           >
-            {activeChapter + 1} / {totalChapters}
+            {hasChapters ? safeChapter + 1 : 0} / {totalChapters}
           </span>
         </div>
 
@@ -330,13 +338,13 @@ export function WalkthroughLayout({
             activeChapter < totalChapters - 1 &&
             onChapterChange(activeChapter + 1)
           }
-          disabled={activeChapter === totalChapters - 1}
+          disabled={!hasChapters || safeChapter === totalChapters - 1}
           style={{
             padding: "6px 14px",
             background:
               activeChapter === totalChapters - 1
                 ? "var(--color-bg-card)"
-                : "linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-purple))",
+                : "linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-orange-warm))",
             color:
               activeChapter === totalChapters - 1
                 ? "var(--color-text-muted)"

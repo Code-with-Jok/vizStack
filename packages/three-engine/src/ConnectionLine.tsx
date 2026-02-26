@@ -19,9 +19,7 @@ export function ConnectionLine({
   color = "#00d4ff",
   active = false,
   animated = true,
-  lineWidth = 2,
 }: ConnectionLineProps) {
-  const lineRef = useRef<THREE.Line>(null);
   const particleRef = useRef<THREE.Mesh>(null);
   const progress = useRef(0);
 
@@ -54,12 +52,11 @@ export function ConnectionLine({
 
   return (
     <group>
-      <primitive object={new THREE.Line(geometry)} ref={lineRef}>
+      <primitive object={new THREE.Line(geometry)}>
         <lineBasicMaterial
           color={color}
           transparent
           opacity={active ? 0.6 : 0.15}
-          linewidth={lineWidth}
         />
       </primitive>
 

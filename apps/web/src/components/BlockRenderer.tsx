@@ -115,6 +115,7 @@ export function BlockRenderer({ block }: { block: ContentBlock }) {
       );
 
     case "image":
+      if (!block.imageUrl) return null;
       return (
         <figure style={{ margin: "24px 0", textAlign: "center" }}>
           <img

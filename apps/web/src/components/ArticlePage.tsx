@@ -123,7 +123,7 @@ export function Callout({
       icon: "⚠️",
     },
   };
-  const s = styles[type];
+  const s = styles[type] ?? styles.info;
 
   return (
     <div
@@ -233,7 +233,7 @@ export function ArticlePage({
                   marginTop: "24px",
                   padding: "10px 12px",
                   background:
-                    "linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-purple))",
+                    "linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-orange-warm))",
                   borderRadius: "8px",
                   color: "#fff",
                   textDecoration: "none",

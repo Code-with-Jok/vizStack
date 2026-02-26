@@ -20,6 +20,7 @@ interface ContentBlock {
   imageUrl?: string;
   caption_en?: string;
   caption_vi?: string;
+  _tempId?: string;
 }
 
 interface Chapter {
@@ -61,7 +62,7 @@ const textarea: React.CSSProperties = {
 const btnPrimary: React.CSSProperties = {
   padding: "6px 14px",
   background:
-    "linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-purple))",
+    "linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-orange-warm))",
   color: "#fff",
   border: "none",
   borderRadius: "6px",
@@ -113,7 +114,7 @@ function BlockEditor({
 }) {
   const typeColors: Record<string, string> = {
     text: "var(--color-accent-cyan)",
-    code: "var(--color-accent-purple)",
+    code: "var(--color-accent-orange-warm)",
     callout: "var(--color-accent-green)",
     table: "var(--color-accent-orange)",
     image: "var(--color-accent-pink, #ec4899)",
@@ -337,7 +338,7 @@ function ChapterEditor({
   };
 
   const addBlock = (type: ContentBlock["type"]) => {
-    setBlocks([...blocks, { type }]);
+    setBlocks([...blocks, { type, _tempId: crypto.randomUUID() }]);
     setDirty(true);
   };
 
@@ -460,7 +461,7 @@ function ChapterEditor({
 
       {blocks.map((block, i) => (
         <BlockEditor
-          key={i}
+          key={block._tempId || i}
           block={block}
           index={i}
           onChange={(b) => updateBlock(i, b)}
@@ -594,6 +595,7 @@ export default function WalkthroughEditorPage() {
           type: "text",
           text_en: "Start writing here...",
           text_vi: "Bắt đầu viết ở đây...",
+          _tempId: crypto.randomUUID(),
         },
       ],
     });

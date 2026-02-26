@@ -16,12 +16,20 @@
     "tableOfContents": "Mục lục",
     "goToViz": "Mở trực quan 3D"
   },
+  "navbar": {
+    "signIn": "Đăng nhập",
+    "signUp": "Đăng ký",
+    "article": "Lý thuyết",
+    "theory": "Lý thuyết",
+    "viz3d": "Trực quan 3D"
+  },
   "landing": {
     "title": "Trực quan hóa Tech,\nLàm chủ Stack",
     "subtitle": "Trực quan hóa 3D tương tác giúp các khái niệm tech phức tạp trở nên trực giác. Xem cách framework, kiến trúc và design pattern thực sự hoạt động — từ bên trong.",
     "featuredCourse": "Khóa học nổi bật",
     "exploreCourses": "Khám phá khóa học",
-    "heroTag": "Học qua trực quan"
+    "heroTag": "Học qua trực quan",
+    "footer": "Xây dựng bằng Next.js • Three.js • React Three Fiber"
   },
   "courses": {
     "nextjs": {
@@ -539,7 +547,7 @@
             },
             "serverApis": {
               "title": "Server APIs",
-              "content": "React 19 thêm server-side form actions và useFormState. Forms có thể submit trực tiếp đến server functions."
+              "content": "React 19 thêm server-side form actions và useActionState. Forms có thể submit trực tiếp đến server functions."
             }
           }
         },

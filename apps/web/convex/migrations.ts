@@ -11,8 +11,8 @@ export const cleanOldData = mutation({
     const allChapters = await ctx.db.query("chapters").collect();
     let deleted = 0;
     for (const ch of allChapters) {
-      // Check if old format missing blocks or content_en
-      if (ch.blocks !== undefined || ch.content_en === undefined) {
+      // Check if old format missing blocks AND content_en
+      if (ch.blocks === undefined && ch.content_en === undefined) {
         await ctx.db.delete(ch._id);
         deleted++;
       }

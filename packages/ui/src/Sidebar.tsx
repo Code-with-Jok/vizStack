@@ -54,7 +54,7 @@ export function Sidebar({ sections, courseTitle, onNavigate }: SidebarProps) {
               fontSize: "0.875rem",
               fontWeight: 700,
               background:
-                "linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-purple))",
+                "linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-orange-warm))",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               whiteSpace: "nowrap",
@@ -65,6 +65,9 @@ export function Sidebar({ sections, courseTitle, onNavigate }: SidebarProps) {
         )}
         <button
           onClick={() => setCollapsed(!collapsed)}
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          aria-expanded={!collapsed}
+          type="button"
           style={{
             background: "transparent",
             border: "none",
@@ -98,6 +101,7 @@ export function Sidebar({ sections, courseTitle, onNavigate }: SidebarProps) {
               {section.links.map((link) => (
                 <button
                   key={link.id}
+                  type="button"
                   onClick={() => onNavigate?.(link.href)}
                   style={{
                     display: "block",

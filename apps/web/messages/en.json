@@ -16,12 +16,20 @@
     "tableOfContents": "Table of Contents",
     "goToViz": "Open 3D Visualization"
   },
+  "navbar": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "article": "article",
+    "theory": "theory",
+    "viz3d": "3D Visualization"
+  },
   "landing": {
     "title": "Visualize Tech,\nMaster the Stack",
     "subtitle": "Interactive 3D visualizations that make complex tech concepts intuitive. See how frameworks, architectures, and design patterns actually work — from the inside.",
     "featuredCourse": "Featured Courses",
     "exploreCourses": "Explore Courses",
-    "heroTag": "Learn by Seeing"
+    "heroTag": "Learn by Seeing",
+    "footer": "Built with Next.js • Three.js • React Three Fiber"
   },
   "courses": {
     "nextjs": {
@@ -539,7 +547,7 @@
             },
             "serverApis": {
               "title": "Server APIs",
-              "content": "React 19 adds server-side form actions and useFormState. Forms can submit directly to server functions without API endpoints."
+              "content": "React 19 adds server-side form actions and useActionState. Forms can submit directly to server functions without API endpoints."
             }
           }
         },

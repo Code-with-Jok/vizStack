@@ -3,13 +3,13 @@ import { mutation } from "./_generated/server";
 export const seedHooks = mutation({
   args: {},
   handler: async (ctx) => {
-    const existing = await ctx.db
+    const existings = await ctx.db
       .query("walkthroughs")
       .withIndex("by_course_slug", (q) =>
         q.eq("courseSlug", "react").eq("slug", "hooks")
       )
-      .unique();
-    if (existing) {
+      .collect();
+    for (const existing of existings) {
       const oldChapters = await ctx.db
         .query("chapters")
         .withIndex("by_walkthrough", (q) => q.eq("walkthroughId", existing._id))
@@ -82,13 +82,13 @@ export const seedHooks = mutation({
 export const seedStateManagement = mutation({
   args: {},
   handler: async (ctx) => {
-    const existing = await ctx.db
+    const existings = await ctx.db
       .query("walkthroughs")
       .withIndex("by_course_slug", (q) =>
         q.eq("courseSlug", "react").eq("slug", "state-management")
       )
-      .unique();
-    if (existing) {
+      .collect();
+    for (const existing of existings) {
       const oldChapters = await ctx.db
         .query("chapters")
         .withIndex("by_walkthrough", (q) => q.eq("walkthroughId", existing._id))

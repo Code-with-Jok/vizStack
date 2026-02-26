@@ -39,7 +39,13 @@ export const update = mutation({
     vizConfig: v.optional(v.any()),
   },
   handler: async (ctx, { id, ...rest }) => {
-    await ctx.db.patch(id, rest);
+    const updates: Record<string, unknown> = {};
+    for (const [k, val] of Object.entries(rest)) {
+      if (val !== undefined) updates[k] = val;
+    }
+    if (Object.keys(updates).length > 0) {
+      await ctx.db.patch(id, updates);
+    }
   },
 });
 

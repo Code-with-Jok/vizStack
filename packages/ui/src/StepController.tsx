@@ -26,7 +26,9 @@ export function StepController({
   prevLabel = "Previous",
   stepLabel = "Step",
 }: StepControllerProps) {
-  const progress = ((currentStep + 1) / totalSteps) * 100;
+  const safeTotalSteps = Math.max(totalSteps, 1);
+  const safeStep = Math.min(Math.max(currentStep, 0), safeTotalSteps - 1);
+  const progress = ((safeStep + 1) / safeTotalSteps) * 100;
 
   return (
     <div
@@ -61,7 +63,7 @@ export function StepController({
               letterSpacing: "0.05em",
             }}
           >
-            {stepLabel} {currentStep + 1} / {totalSteps}
+            {stepLabel} {safeStep + 1} / {safeTotalSteps}
           </span>
           <span
             style={{
@@ -87,7 +89,7 @@ export function StepController({
               width: `${progress}%`,
               height: "100%",
               background:
-                "linear-gradient(90deg, var(--color-accent-cyan), var(--color-accent-purple))",
+                "linear-gradient(90deg, var(--color-accent-cyan), var(--color-accent-orange-warm))",
               borderRadius: "2px",
               transition: "width 0.4s ease",
             }}
@@ -109,7 +111,7 @@ export function StepController({
             fontWeight: 700,
             marginBottom: "12px",
             background:
-              "linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-purple))",
+              "linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-orange-warm))",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}
@@ -138,21 +140,21 @@ export function StepController({
       >
         <button
           onClick={onPrev}
-          disabled={currentStep === 0}
+          disabled={safeStep === 0}
           style={{
             flex: 1,
             padding: "10px 16px",
             background:
-              currentStep === 0 ? "var(--color-bg-card)" : "transparent",
+              safeStep === 0 ? "var(--color-bg-card)" : "transparent",
             color:
-              currentStep === 0
+              safeStep === 0
                 ? "var(--color-text-muted)"
                 : "var(--color-text-primary)",
             border: `1px solid ${
-              currentStep === 0 ? "transparent" : "var(--color-border)"
+              safeStep === 0 ? "transparent" : "var(--color-border)"
             }`,
             borderRadius: "8px",
-            cursor: currentStep === 0 ? "not-allowed" : "pointer",
+            cursor: safeStep === 0 ? "not-allowed" : "pointer",
             fontSize: "0.875rem",
             fontWeight: 500,
             transition: "all 0.2s ease",
@@ -162,21 +164,21 @@ export function StepController({
         </button>
         <button
           onClick={onNext}
-          disabled={currentStep === totalSteps - 1}
+          disabled={safeStep === safeTotalSteps - 1}
           style={{
             flex: 1,
             padding: "10px 16px",
             background:
-              currentStep === totalSteps - 1
+              safeStep === safeTotalSteps - 1
                 ? "var(--color-bg-card)"
-                : "linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-purple))",
+                : "linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-orange-warm))",
             color:
-              currentStep === totalSteps - 1
+              safeStep === safeTotalSteps - 1
                 ? "var(--color-text-muted)"
                 : "white",
             border: "none",
             borderRadius: "8px",
-            cursor: currentStep === totalSteps - 1 ? "not-allowed" : "pointer",
+            cursor: safeStep === safeTotalSteps - 1 ? "not-allowed" : "pointer",
             fontSize: "0.875rem",
             fontWeight: 600,
             transition: "all 0.2s ease",

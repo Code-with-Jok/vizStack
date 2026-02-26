@@ -3,6 +3,7 @@
 import { useTranslations, useLocale } from "next-intl";
 import { useQuery, useMutation } from "convex/react";
 import { useUser } from "@clerk/nextjs";
+import { useDebouncedCallback } from "use-debounce";
 import { api } from "../../../../../../../convex/_generated/api";
 import { ArticlePage, ArticleSection } from "@/components/ArticlePage";
 import dynamic from "next/dynamic";
@@ -38,6 +39,14 @@ export default function StateManagementArticle() {
   const updateChapter = useMutation(api.chapters.update);
   const updateWalkthrough = useMutation(api.walkthroughs.update);
 
+  const debouncedUpdateChapter = useDebouncedCallback((args) => {
+    updateChapter(args);
+  }, 1000);
+
+  const debouncedUpdateWalkthrough = useDebouncedCallback((args) => {
+    updateWalkthrough(args);
+  }, 1000);
+
   // Loading state
   if (walkthrough === undefined || chapters === undefined) {
     return (
@@ -71,7 +80,7 @@ export default function StateManagementArticle() {
       title: vi ? ch.title_vi : ch.title_en,
       onTitleChange: isAdmin
         ? (val: string) => {
-            updateChapter({
+            debouncedUpdateChapter({
               id: ch._id,
               title_en: vi ? ch.title_en : val, // preserve other lang
               title_vi: vi ? val : ch.title_vi,
@@ -84,7 +93,7 @@ export default function StateManagementArticle() {
             editable={isAdmin}
             initialContent={vi ? ch.content_vi : ch.content_en}
             onChange={(val) => {
-              updateChapter({
+              debouncedUpdateChapter({
                 id: ch._id,
                 content_en: vi ? ch.content_en : val, // preserve other lang
                 content_vi: vi ? val : ch.content_vi,
@@ -101,7 +110,7 @@ export default function StateManagementArticle() {
       onTitleChange={
         isAdmin
           ? (val) => {
-              updateWalkthrough({
+              debouncedUpdateWalkthrough({
                 id: walkthrough._id,
                 title_en: vi ? walkthrough.title_en : val,
                 title_vi: vi ? val : walkthrough.title_vi,
@@ -113,7 +122,7 @@ export default function StateManagementArticle() {
       onDescriptionChange={
         isAdmin
           ? (val) => {
-              updateWalkthrough({
+              debouncedUpdateWalkthrough({
                 id: walkthrough._id,
                 description_en: vi ? walkthrough.description_en : val,
                 description_vi: vi ? val : walkthrough.description_vi,

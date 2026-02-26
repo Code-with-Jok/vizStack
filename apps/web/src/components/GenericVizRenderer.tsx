@@ -50,16 +50,22 @@ export function GenericVizRenderer({ vizConfig }: GenericVizRendererProps) {
           delay={i * 0.1}
         />
       ))}
-      {connections.map((conn, i) => (
-        <ConnectionLine
-          key={i}
-          start={[nodes[conn.fromIndex].x, nodes[conn.fromIndex].y, 0]}
-          end={[nodes[conn.toIndex].x, nodes[conn.toIndex].y, 0]}
-          color={nodes[conn.toIndex].glowColor}
-          active={true}
-          animated={true}
-        />
-      ))}
+      {connections.map((conn, i) => {
+        const fromNode = nodes[conn.fromIndex];
+        const toNode = nodes[conn.toIndex];
+        if (!fromNode || !toNode) return null;
+        
+        return (
+          <ConnectionLine
+            key={i}
+            start={[fromNode.x, fromNode.y, 0]}
+            end={[toNode.x, toNode.y, 0]}
+            color={toNode.glowColor}
+            active={true}
+            animated={true}
+          />
+        );
+      })}
     </Scene>
   );
 }

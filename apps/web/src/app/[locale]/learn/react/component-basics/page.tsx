@@ -23,8 +23,6 @@ export default function ComponentBasicsPage() {
   const [editorOpen, setEditorOpen] = useState(false);
   const { user } = useUser();
 
-  console.log({ user });
-
   const isAdmin =
     !!user &&
     (user.id === process.env.NEXT_PUBLIC_IS_ADMIN ||

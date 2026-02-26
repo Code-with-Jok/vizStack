@@ -1,16 +1,20 @@
 "use client";
 
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import "@blocknote/core/fonts/inter.css";
 import "@blocknote/mantine/style.css";
 import { BlockNoteView } from "@blocknote/mantine";
-import { 
-  createReactBlockSpec, 
+import {
+  createReactBlockSpec,
   useCreateBlockNote,
   getDefaultReactSlashMenuItems,
-  SuggestionMenuController
+  SuggestionMenuController,
 } from "@blocknote/react";
-import { BlockNoteSchema, defaultBlockSpecs, defaultProps } from "@blocknote/core";
+import {
+  BlockNoteSchema,
+  defaultBlockSpecs,
+  defaultProps,
+} from "@blocknote/core";
 import { MdInfoOutline } from "react-icons/md";
 
 // 1. Create the Custom Alert Block Spec
@@ -59,7 +63,13 @@ const AlertBlock = createReactBlockSpec(
             borderLeft: `4px solid ${borderColors[variant] || borderColors.info}`,
           }}
         >
-          <div style={{ marginTop: "2px", fontSize: "1.2rem", color: borderColors[variant] || borderColors.info }}>
+          <div
+            style={{
+              marginTop: "2px",
+              fontSize: "1.2rem",
+              color: borderColors[variant] || borderColors.info,
+            }}
+          >
             <MdInfoOutline />
           </div>
           <div
@@ -92,12 +102,17 @@ export default function BlockEditor({
   editable = true,
 }: BlockEditorProps) {
   const [ready, setReady] = useState(false);
-  
+
   // 3. Initialize Editor with the Schema
   const editor = useCreateBlockNote({ schema });
 
+  const initializedRef = useRef(false);
+
   useEffect(() => {
     async function initEditor() {
+      if (initializedRef.current) return;
+      initializedRef.current = true;
+
       if (!initialContent) {
         setReady(true);
         return;
@@ -116,13 +131,16 @@ export default function BlockEditor({
     }
 
     initEditor();
-  }, [editor]); 
+  }, [editor]);
 
   // 4. Create Slash Menu Item for the Alert Block
   const insertAlert = (editor: typeof schema.BlockNoteEditor) => {
     const currentBlock = editor.getTextCursorPosition().block;
     // Replace the slash command block with our new Alert block
-    editor.replaceBlocks([currentBlock], [{ type: "alert", props: { variant: "info" } }]);
+    editor.replaceBlocks(
+      [currentBlock],
+      [{ type: "alert", props: { variant: "info" } }]
+    );
   };
 
   const getCustomSlashMenuItems = useMemo(() => {
@@ -160,11 +178,12 @@ export default function BlockEditor({
       <SuggestionMenuController
         triggerCharacter={"/"}
         getItems={async (query) => {
-          return getCustomSlashMenuItems.filter((item) =>
-            item.title.toLowerCase().startsWith(query.toLowerCase()) ||
-            item.aliases?.some((alias) =>
-              alias.toLowerCase().startsWith(query.toLowerCase())
-            )
+          return getCustomSlashMenuItems.filter(
+            (item) =>
+              item.title.toLowerCase().startsWith(query.toLowerCase()) ||
+              item.aliases?.some((alias) =>
+                alias.toLowerCase().startsWith(query.toLowerCase())
+              )
           );
         }}
       />

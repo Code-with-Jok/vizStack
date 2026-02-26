@@ -2,13 +2,14 @@
 
 import { useTranslations, useLocale } from "next-intl";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const COURSES = [
   {
     key: "react",
     icon: "⚛️",
     gradient: "linear-gradient(135deg, #61dafb, #7c3aed)",
-    tags: ["Components", "Hooks", "State Management", "Rendering"],
+    tags: ["componentBasics", "hooks", "stateManagement", "rendering"],
     tagColor: "#61dafb",
     slug: "react",
   },
@@ -126,15 +127,17 @@ export default function LandingPage() {
 
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           {COURSES.map((course) => (
-            <div
+            <Link
               key={course.key}
+              href={`/${locale}/learn/${course.slug}`}
               className="glass-card"
               style={{
                 padding: "32px",
                 cursor: "pointer",
                 transition: "all 0.3s ease",
+                display: "block",
+                textDecoration: "none",
               }}
-              onClick={() => router.push(`/${locale}/learn/${course.slug}`)}
             >
               <div
                 style={{
@@ -197,7 +200,7 @@ export default function LandingPage() {
                           border: `1px solid ${course.tagColor}20`,
                         }}
                       >
-                        {tag}
+                        {t(`courses.${course.key}.sections.${tag}`)}
                       </span>
                     ))}
                   </div>
@@ -213,7 +216,7 @@ export default function LandingPage() {
                   →
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
@@ -228,7 +231,7 @@ export default function LandingPage() {
           color: "var(--color-text-muted)",
         }}
       >
-        Built with Next.js • Three.js • React Three Fiber
+        {t("landing.footer")}
       </footer>
     </div>
   );

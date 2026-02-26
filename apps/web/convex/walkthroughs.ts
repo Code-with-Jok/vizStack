@@ -38,6 +38,15 @@ export const create = mutation({
     order: v.number(),
   },
   handler: async (ctx, args) => {
+    const existing = await ctx.db
+      .query("walkthroughs")
+      .withIndex("by_course_slug", (q) =>
+        q.eq("courseSlug", args.courseSlug).eq("slug", args.slug)
+      )
+      .first();
+    if (existing) {
+      throw new Error(`Walkthrough ${args.slug} already exists for course ${args.courseSlug}`);
+    }
     return ctx.db.insert("walkthroughs", args);
   },
 });

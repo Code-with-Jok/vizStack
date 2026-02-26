@@ -204,15 +204,14 @@ export function EditorModal({
 
   // ─── AI Generate ───
   const handleGenerateViz = async () => {
-    if (sorted.length === 0) return;
+    if (sorted.length === 0 || activeIdx === null) return;
+    const currentChapter = sorted[activeIdx];
+    if (!currentChapter) return;
+
     setGenerating(true);
     setAiStatus(
       vi ? "🧠 Đang tạo 3D bằng Gemini..." : "🧠 Generating 3D with Gemini..."
     );
-
-    if (activeIdx === null) return;
-    const currentChapter = sorted[activeIdx];
-    if (!currentChapter) return;
 
     try {
       const result = await generateViz({

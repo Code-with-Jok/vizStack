@@ -74,7 +74,7 @@ export function Navbar() {
             letterSpacing: "-0.02em",
             cursor: "pointer",
             background:
-              "linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-purple))",
+              "linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-orange-warm))",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             flexShrink: 0,
@@ -155,7 +155,7 @@ export function Navbar() {
                 gap: "4px",
               }}
             >
-              📖 Article
+              📖 {t("navbar.article")}
             </span>
           </>
         )}
@@ -191,14 +191,7 @@ export function Navbar() {
               transition: "all 0.2s ease",
             }}
           >
-            📖{" "}
-            {(() => {
-              try {
-                return t("common.article");
-              } catch {
-                return "Theory";
-              }
-            })()}
+            📖 {t("navbar.theory")}
           </button>
         )}
 
@@ -214,7 +207,7 @@ export function Navbar() {
               gap: "5px",
               padding: "5px 12px",
               background:
-                "linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-purple))",
+                "linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-orange-warm))",
               border: "none",
               borderRadius: "8px",
               color: "#fff",
@@ -224,7 +217,7 @@ export function Navbar() {
               transition: "all 0.2s ease",
             }}
           >
-            🧊 3D Viz
+            🧊 {t("navbar.viz3d")}
           </button>
         )}
 
@@ -249,7 +242,7 @@ export function Navbar() {
                   background: "var(--color-glow-cyan)",
                 }}
               >
-                Sign In
+                {t("navbar.signIn")}
               </button>
             </SignInButton>
           </SignedOut>
