@@ -16,9 +16,7 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
 });
 
-export function generateStaticParams() {
-  return [{ locale: "en" }, { locale: "vi" }];
-}
+
 
 export default async function LocaleLayout({
   children,
