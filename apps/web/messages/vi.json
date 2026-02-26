@@ -1,0 +1,617 @@
+{
+  "common": {
+    "language": "Ngôn ngữ",
+    "switchLocale": "English",
+    "home": "Trang chủ",
+    "courses": "Khóa học",
+    "learnMore": "Tìm hiểu thêm",
+    "startLearning": "Bắt đầu học",
+    "steps": "Các bước",
+    "next": "Tiếp theo",
+    "prev": "Quay lại",
+    "step": "Bước",
+    "comingSoon": "Sắp ra mắt",
+    "allCourses": "Tất cả khóa học",
+    "article": "Lý thuyết",
+    "tableOfContents": "Mục lục",
+    "goToViz": "Mở trực quan 3D"
+  },
+  "landing": {
+    "title": "Trực quan hóa Tech,\nLàm chủ Stack",
+    "subtitle": "Trực quan hóa 3D tương tác giúp các khái niệm tech phức tạp trở nên trực giác. Xem cách framework, kiến trúc và design pattern thực sự hoạt động — từ bên trong.",
+    "featuredCourse": "Khóa học nổi bật",
+    "exploreCourses": "Khám phá khóa học",
+    "heroTag": "Học qua trực quan"
+  },
+  "courses": {
+    "nextjs": {
+      "title": "Fullstack Next.js",
+      "description": "Nắm vững kiến trúc Next.js với trực quan hóa 3D tương tác. Hiểu System Design, Monorepo, SOLID Principles và Tailwind CSS từ bên trong.",
+      "lessons": {
+        "systemDesign": {
+          "title": "Tổng quan System Design",
+          "description": "Trực quan hóa toàn bộ vòng đời request của Next.js — từ client request qua middleware, routing, server components, API layer, đến database và quay lại.",
+          "steps": {
+            "intro": {
+              "title": "Bức tranh toàn cảnh",
+              "content": "Ứng dụng Next.js là một hệ thống full-stack. Hãy theo dõi một request đi qua mọi lớp để hiểu cách tất cả kết nối với nhau."
+            },
+            "client": {
+              "title": "Client Request",
+              "content": "Mọi thứ bắt đầu từ một hành động của người dùng trên trình duyệt. Một click, điều hướng, hoặc gửi form tạo ra một HTTP request gửi đến server."
+            },
+            "middleware": {
+              "title": "Lớp Middleware",
+              "content": "Trước khi đến bất kỳ trang nào, request đi qua Middleware. Tại đây bạn có thể redirect, rewrite URL, đặt headers, hoặc kiểm tra xác thực — tất cả ở edge."
+            },
+            "routing": {
+              "title": "App Router",
+              "content": "Next.js sử dụng định tuyến dựa trên file system. App Router ánh xạ đường dẫn URL tới file trong thư mục /app. Mỗi thư mục trở thành một route segment."
+            },
+            "serverComponent": {
+              "title": "Server Components",
+              "content": "Mặc định, components trong Next.js là Server Components. Chúng render trên server, có thể truy cập trực tiếp database và API, và chỉ gửi HTML tới client."
+            },
+            "apiLayer": {
+              "title": "Lớp API",
+              "content": "Route Handlers (route.ts) và Server Actions cung cấp lớp API. Chúng xử lý mutations dữ liệu, gọi API bên ngoài và business logic."
+            },
+            "database": {
+              "title": "Database",
+              "content": "Lớp dữ liệu kết nối tới database thông qua ORM như Prisma hoặc Drizzle. Truy vấn chạy trên server, giữ cho thông tin database an toàn."
+            },
+            "response": {
+              "title": "Response & Streaming",
+              "content": "Server stream HTML đã render về client. React hydrate trang, biến nó thành tương tác. Suspense boundaries cho phép tải progressive."
+            }
+          }
+        }
+      }
+    },
+    "react": {
+      "title": "ReactJS",
+      "description": "Làm chủ React từ cơ bản đến nâng cao với trực quan hóa 3D tương tác. Hiểu component tree, hooks lifecycle, state management và rendering pipeline.",
+      "sections": {
+        "componentBasics": "Component cơ bản",
+        "rendering": "Rendering",
+        "hooks": "Hooks",
+        "stateManagement": "Quản lý State",
+        "routers": "Routers",
+        "writingCss": "Viết CSS",
+        "componentLibraries": "Thư viện Component",
+        "apiCalls": "Gọi API",
+        "forms": "Forms",
+        "testing": "Testing",
+        "typesValidation": "Types & Validation",
+        "frameworks": "Frameworks",
+        "advancedTopics": "Chủ đề nâng cao",
+        "animation": "Animation",
+        "mobile": "Ứng dụng Mobile"
+      },
+      "lessons": {
+        "componentBasics": {
+          "title": "Component cơ bản",
+          "description": "Trực quan hóa component tree của React — cách JSX trở thành components, props chảy xuống, và composition tạo nên UI mạnh mẽ.",
+          "steps": {
+            "intro": {
+              "title": "Component Tree",
+              "content": "Mỗi ứng dụng React là một cây components. Component gốc App phân nhánh thành các components con, mỗi cái chịu trách nhiệm một phần UI."
+            },
+            "app": {
+              "title": "Component Gốc",
+              "content": "Component App là gốc của cây. Đó là điểm khởi đầu mà React render đầu tiên. Mọi thứ khác sống bên trong nó."
+            },
+            "children": {
+              "title": "Components con",
+              "content": "App chia thành Header, Main và Footer. Mỗi cái là component độc lập, nhận dữ liệu qua props và quản lý rendering riêng."
+            },
+            "headerChildren": {
+              "title": "Composition: Header",
+              "content": "Header kết hợp Nav và Logo. Đây là composition — xây dựng UI phức tạp bằng cách kết hợp các components đơn giản, tập trung."
+            },
+            "mainChildren": {
+              "title": "Composition: Nội dung chính",
+              "content": "Main chứa ProductList và Sidebar. Components có thể tái sử dụng — cùng ProductList có thể xuất hiện trên các trang khác nhau."
+            },
+            "listItems": {
+              "title": "Lists & Keys",
+              "content": "ProductList render nhiều ProductCard từ mảng. Mỗi card cần prop 'key' duy nhất để React theo dõi chúng hiệu quả."
+            },
+            "deepNesting": {
+              "title": "Props Drilling",
+              "content": "ProductCard chứa Button và Price. Dữ liệu chảy XUỐNG qua props. Khi lồng sâu, bạn có thể cần Context hoặc state management."
+            },
+            "fullTree": {
+              "title": "Bức tranh toàn cảnh",
+              "content": "Component tree hoàn chỉnh cho thấy cách React xây dựng UI phức tạp từ các mảnh đơn giản. Mỗi component được cô lập, tái sử dụng và dễ test."
+            }
+          }
+        },
+        "hooks": {
+          "title": "React Hooks",
+          "description": "Hiểu vòng đời của useState, useEffect và useRef — cách state kích hoạt re-render và side effects chạy sau khi paint.",
+          "steps": {
+            "intro": {
+              "title": "Tổng quan Hooks",
+              "content": "Hooks cho phép function components sử dụng state và side effects. Chúng chạy theo thứ tự, mỗi lần render, và phải tuân theo Rules of Hooks."
+            },
+            "component": {
+              "title": "Component",
+              "content": "Function component chỉ là một hàm trả về JSX. Hooks gắn siêu năng lực cho nó — state, effects, refs và nhiều hơn."
+            },
+            "useState": {
+              "title": "useState",
+              "content": "useState cho component bộ nhớ. Nó trả về [giá trị, setter]. Khi gọi setter, React lên lịch re-render với giá trị mới."
+            },
+            "stateUpdate": {
+              "title": "Chu kỳ cập nhật State",
+              "content": "Gọi setState không cập nhật ngay. React gom các cập nhật, re-render component, và tạo JSX mới với state đã cập nhật."
+            },
+            "useEffect": {
+              "title": "useEffect",
+              "content": "useEffect chạy SAU KHI component render. Nó dùng cho side effects: fetch dữ liệu, subscriptions, hoặc thao tác DOM."
+            },
+            "effectLifecycle": {
+              "title": "Vòng đời Effect",
+              "content": "Effects có thể trả về hàm cleanup chạy trước effect tiếp theo hoặc khi unmount. Điều này ngăn memory leaks từ subscriptions."
+            },
+            "useRef": {
+              "title": "useRef",
+              "content": "useRef tạo tham chiếu có thể thay đổi, tồn tại qua các lần render mà không gây re-render. Hoàn hảo để truy cập DOM elements."
+            },
+            "renderCycle": {
+              "title": "Chu kỳ Render",
+              "content": "Re-render → JSX mới → cập nhật DOM → useEffect chạy. Chu kỳ này lặp lại mỗi khi state thay đổi. Hiểu nó giúp tránh vòng lặp vô hạn."
+            }
+          }
+        },
+        "stateManagement": {
+          "title": "Quản lý State",
+          "description": "So sánh Context, Zustand và Jotai — xem cách global state chảy từ stores đến components và kích hoạt selective re-renders.",
+          "steps": {
+            "intro": {
+              "title": "Tại sao cần quản lý State?",
+              "content": "Khi nhiều components cần cùng dữ liệu, prop drilling trở nên khó chịu. Giải pháp quản lý state cung cấp store trung tâm truy cập từ bất kỳ đâu."
+            },
+            "store": {
+              "title": "Global Store",
+              "content": "Global store giữ state ứng dụng bên ngoài component tree. Components subscribe vào nó và chỉ re-render khi phần state của chúng thay đổi."
+            },
+            "approaches": {
+              "title": "Ba cách tiếp cận",
+              "content": "React cung cấp nhiều pattern: Context (built-in), Zustand (store tối giản), và Jotai (state nguyên tử). Mỗi cái có trade-offs khác nhau."
+            },
+            "context": {
+              "title": "Context API",
+              "content": "Context dùng Provider component để chia sẻ state. Tất cả children trong Provider có thể truy cập giá trị. Nhưng mọi consumer đều re-render khi có bất kỳ thay đổi."
+            },
+            "zustand": {
+              "title": "Zustand",
+              "content": "Zustand tạo store ngoài React. Components dùng useStore() với selectors để subscribe vào phần state cụ thể. Chỉ components bị ảnh hưởng mới re-render."
+            },
+            "jotai": {
+              "title": "Jotai (Nguyên tử)",
+              "content": "Jotai chia state thành các atoms độc lập. Components subscribe vào từng atom với useAtom(). Đây là cách tiếp cận chi tiết nhất."
+            },
+            "rerender": {
+              "title": "Selective Re-rendering",
+              "content": "Khác biệt chính là phạm vi re-render. Context re-render tất cả consumers. Zustand và Jotai chỉ re-render components dùng phần state đã thay đổi."
+            }
+          }
+        },
+        "rendering": {
+          "title": "Rendering Pipeline",
+          "description": "Theo dõi hành trình từ JSX đến pixels — qua createElement, Virtual DOM, Reconciliation và DOM patches.",
+          "steps": {
+            "intro": {
+              "title": "React Render như thế nào",
+              "content": "React không thao tác DOM trực tiếp. Nó dùng Virtual DOM để tính toán thay đổi tối thiểu cần thiết, rồi áp dụng chúng cùng lúc."
+            },
+            "jsx": {
+              "title": "JSX",
+              "content": "JSX trông như HTML nhưng nó là JavaScript. Babel/SWC chuyển đổi <div> thành React.createElement('div') khi build."
+            },
+            "createElement": {
+              "title": "React.createElement",
+              "content": "createElement trả về object mô tả UI element — type, props và children. Đây là 'React Element'."
+            },
+            "vdom": {
+              "title": "Virtual DOM",
+              "content": "Virtual DOM là cây JavaScript nhẹ chứa React Elements. Tạo và so sánh nó rất rẻ — không như các DOM node thật."
+            },
+            "twoTrees": {
+              "title": "Hai cây",
+              "content": "Khi re-render, React tạo cây Virtual DOM MỚI. Lúc này có hai cây: cây cũ và cây mới. Đã đến lúc tìm sự khác biệt."
+            },
+            "diffing": {
+              "title": "Reconciliation (Diffing)",
+              "content": "Thuật toán diffing của React so sánh hai cây theo từng node. Nó dùng 'keys' để khớp list items và xác định gì đã thay đổi, thêm, hoặc xóa."
+            },
+            "patches": {
+              "title": "Minimal Patches",
+              "content": "Từ kết quả diff, React tạo tập hợp thao tác DOM tối thiểu. Thay vì xây lại mọi thứ, nó chỉ chạm vào những gì thực sự thay đổi."
+            },
+            "domUpdate": {
+              "title": "Cập nhật DOM & Paint",
+              "content": "React áp dụng patches vào DOM thật trong một batch duy nhất. Trình duyệt sau đó vẽ lại màn hình. Đây là lý do React nhanh — ít thao tác DOM."
+            }
+          }
+        },
+        "routers": {
+          "title": "Routers",
+          "description": "Hiểu cách routing phía client hoạt động với React Router và Tanstack Router.",
+          "steps": {
+            "intro": {
+              "title": "Routing phía Client",
+              "content": "Ứng dụng SPA không tải lại trang khi điều hướng. Router chặn thay đổi URL và hoán đổi components mà không cần gọi server."
+            },
+            "url": {
+              "title": "Thay đổi URL",
+              "content": "Khi người dùng click link hoặc gõ URL, router bắt sự thay đổi bằng History API. Không có HTTP request nào được gửi."
+            },
+            "router": {
+              "title": "Router",
+              "content": "Component Router bao bọc ứng dụng, lắng nghe thay đổi URL. Nó là bộ não quyết định component nào hiển thị cho mỗi đường dẫn."
+            },
+            "routeConfig": {
+              "title": "Cấu hình Route",
+              "content": "Routes ánh xạ URL patterns đến components. Bạn định nghĩa chúng khai báo — mỗi <Route path='/about'> render component About."
+            },
+            "pageRender": {
+              "title": "Render trang",
+              "content": "Khi URL khớp route, router render component đã khớp trong Outlet. Nested routes cho phép kết hợp layout."
+            },
+            "navigation": {
+              "title": "Điều hướng lập trình",
+              "content": "useNavigate() và <Link> cho phép điều hướng không cần tải lại trang. Link render thẻ anchor, useNavigate dùng trong event handlers."
+            },
+            "fullCycle": {
+              "title": "Chu kỳ đầy đủ",
+              "content": "Điều hướng → cập nhật URL → khớp route → render component → điều hướng mới. Chu kỳ này tạo trải nghiệm mượt như ứng dụng."
+            }
+          }
+        },
+        "writingCss": {
+          "title": "Viết CSS",
+          "description": "So sánh CSS Modules, Tailwind CSS và Panda CSS để styling React components.",
+          "steps": {
+            "intro": {
+              "title": "Styling trong React",
+              "content": "React không ép buộc cách styling. Bạn có thể dùng vanilla CSS, CSS Modules, utility frameworks, hoặc CSS-in-JS."
+            },
+            "component": {
+              "title": "Component",
+              "content": "Mỗi React component cần styles. Câu hỏi là: styles nằm đâu, scoped thế nào, và bundle ra sao?"
+            },
+            "approaches": {
+              "title": "Ba cách tiếp cận",
+              "content": "CSS Modules scope styles cục bộ. Tailwind dùng utility classes. Panda CSS tạo type-safe, atomic CSS khi build."
+            },
+            "cssModules": {
+              "title": "CSS Modules",
+              "content": "Import styles từ file .module.css. Tên class được hash tự động để tránh xung đột. Scoped mặc định, không runtime."
+            },
+            "tailwind": {
+              "title": "Tailwind CSS",
+              "content": "Soạn utility classes trực tiếp trong JSX. Trình biên dịch JIT chỉ tạo CSS bạn dùng. Không cần chuyển đổi giữa các file."
+            },
+            "pandaCss": {
+              "title": "Panda CSS",
+              "content": "Định nghĩa design tokens và recipes. Panda trích xuất styles khi build, tạo atomic CSS với hỗ trợ TypeScript đầy đủ."
+            },
+            "bundle": {
+              "title": "Đầu ra",
+              "content": "Cả ba cách đều tạo CSS bundles tối ưu. Lựa chọn phụ thuộc vào sở thích team, kích thước dự án và nhu cầu type-safety."
+            }
+          }
+        },
+        "componentLibraries": {
+          "title": "Thư viện Component",
+          "description": "Khám phá Material UI, Shadcn UI, Chakra UI và headless component primitives.",
+          "steps": {
+            "intro": {
+              "title": "Tại sao dùng thư viện?",
+              "content": "Xây dựng UI accessible, đẹp từ đầu rất khó. Thư viện component cung cấp components đã được test, accessible sẵn."
+            },
+            "app": {
+              "title": "Ứng dụng của bạn",
+              "content": "Ứng dụng cần buttons, modals, forms và navigation. Bạn có thể tự xây hoặc dùng thư viện xử lý các edge cases."
+            },
+            "compare": {
+              "title": "Ba cách tiếp cận",
+              "content": "Material UI cung cấp components có style sẵn. Shadcn UI copy code vào dự án. Chakra UI cung cấp runtime-styled primitives."
+            },
+            "mui": {
+              "title": "Material UI",
+              "content": "MUI cung cấp ThemeProvider để styling toàn cục. Components tuân theo Material Design. Tùy chỉnh cao qua sx prop."
+            },
+            "shadcn": {
+              "title": "Shadcn UI",
+              "content": "Shadcn copy code component trực tiếp vào dự án. Dựa trên Radix primitives + Tailwind CSS. Bạn sở hữu và tùy chỉnh mọi dòng."
+            },
+            "chakra": {
+              "title": "Chakra UI",
+              "content": "Chakra dùng runtime CSS-in-JS với style props. Components có thể kết hợp và accessible mặc định."
+            },
+            "headless": {
+              "title": "Headless Primitives",
+              "content": "Radix UI và React Aria cung cấp primitives không style, accessible. Bạn tự thêm styles. Linh hoạt tối đa, không ý kiến về giao diện."
+            }
+          }
+        },
+        "apiCalls": {
+          "title": "Gọi API",
+          "description": "Học cách fetch dữ liệu với Axios, React Query, SWR và Apollo Client.",
+          "steps": {
+            "intro": {
+              "title": "Fetch dữ liệu",
+              "content": "React components cần dữ liệu từ API. Thách thức là quản lý loading states, errors, caching và re-fetching hiệu quả."
+            },
+            "component": {
+              "title": "Component",
+              "content": "Component khai báo dữ liệu nó cần. Thư viện fetching xử lý khi nào và cách lấy, và hiển thị gì khi đang tải."
+            },
+            "fetch": {
+              "title": "Lớp Fetch",
+              "content": "Giữa component và API là lớp dữ liệu. Có thể đơn giản (Axios) hoặc thông minh (React Query với caching)."
+            },
+            "axios": {
+              "title": "Axios",
+              "content": "Axios là HTTP client. Nó xử lý requests, interceptors và transforms, nhưng BẠN tự quản lý state, loading và caching."
+            },
+            "reactQuery": {
+              "title": "React Query / SWR",
+              "content": "Các thư viện này thêm smart caching, background re-fetching, optimistic updates và pagination. Cache ngăn requests thừa."
+            },
+            "apollo": {
+              "title": "Apollo Client",
+              "content": "Apollo là GraphQL client với normalized cache. Nó query đúng fields bạn cần và tự động cập nhật UI khi dữ liệu thay đổi."
+            },
+            "api": {
+              "title": "API",
+              "content": "REST endpoints trả về shapes cố định. GraphQL cho client request chính xác những gì cần. Cả hai hoạt động với mọi chiến lược fetching."
+            }
+          }
+        },
+        "forms": {
+          "title": "Forms",
+          "description": "So sánh React Hook Form và Formik để quản lý form và validation.",
+          "steps": {
+            "intro": {
+              "title": "Quản lý Form",
+              "content": "Forms là cách chính người dùng nhập dữ liệu. Quản lý values, validation, errors và trạng thái submit nhanh chóng trở nên phức tạp."
+            },
+            "form": {
+              "title": "<form>",
+              "content": "HTML forms submit dữ liệu natively. Trong React, ta chặn onSubmit để xử lý dữ liệu bằng JavaScript, cho phép validation và UX phong phú hơn."
+            },
+            "compare": {
+              "title": "Hai thư viện",
+              "content": "React Hook Form dùng uncontrolled inputs cho hiệu suất. Formik dùng controlled inputs cho đơn giản. Cả hai xử lý validation tốt."
+            },
+            "rhf": {
+              "title": "React Hook Form",
+              "content": "register() kết nối inputs mà không re-render mỗi lần gõ. Cách tiếp cận uncontrolled nghĩa là ít re-renders và hiệu suất tốt hơn."
+            },
+            "formik": {
+              "title": "Formik",
+              "content": "Components <Field> của Formik là controlled — values sống trong state của Formik. Mô hình đơn giản nhưng nhiều re-renders hơn với forms lớn."
+            },
+            "validation": {
+              "title": "Validation (Zod)",
+              "content": "Cả hai thư viện tích hợp với Zod cho schema validation. Định nghĩa schema một lần và tự động có form data type-safe."
+            },
+            "submit": {
+              "title": "Submit",
+              "content": "onSubmit nhận dữ liệu đã validate. Xử lý API calls, hiển thị trạng thái thành công/lỗi, và reset form — tất cả với type safety."
+            }
+          }
+        },
+        "testing": {
+          "title": "Testing",
+          "description": "Hiểu testing pyramid với Vitest, Jest, Testing Library, Cypress và Playwright.",
+          "steps": {
+            "intro": {
+              "title": "Tại sao Testing?",
+              "content": "Tests cho bạn tự tin rằng code hoạt động đúng. Chúng bắt bugs trước người dùng và làm refactoring an toàn."
+            },
+            "code": {
+              "title": "Source Code",
+              "content": "Ứng dụng React có components, hooks và utilities. Mỗi loại cần kiểu test khác nhau tùy độ phức tạp."
+            },
+            "pyramid": {
+              "title": "Testing Pyramid",
+              "content": "Unit tests nhanh và nhiều. Integration tests xác nhận components hoạt động cùng nhau. E2E tests mô phỏng luồng người dùng thật — ít hơn nhưng thực tế nhất."
+            },
+            "unit": {
+              "title": "Unit Tests",
+              "content": "Vitest và Jest chạy tests cô lập cho functions và hooks. Cực nhanh và cho feedback tức thì khi phát triển."
+            },
+            "integration": {
+              "title": "Integration Tests",
+              "content": "React Testing Library render components và test tương tác người dùng. Test hành vi, không test chi tiết triển khai."
+            },
+            "e2e": {
+              "title": "E2E Tests",
+              "content": "Cypress và Playwright mở trình duyệt thật và mô phỏng hành trình người dùng. Bắt được vấn đề mà unit tests không thể."
+            },
+            "ci": {
+              "title": "CI/CD",
+              "content": "Tất cả tests chạy trong CI pipeline trước khi deploy. Tests xanh = deploy tự tin. Testing pyramid đảm bảo feedback nhanh với coverage đầy đủ."
+            }
+          }
+        },
+        "typesValidation": {
+          "title": "Types & Validation",
+          "description": "Xem cách TypeScript và Zod cung cấp type safety compile-time và runtime.",
+          "steps": {
+            "intro": {
+              "title": "Type Safety",
+              "content": "JavaScript là dynamically typed — lỗi xuất hiện khi chạy. TypeScript bắt chúng khi biên dịch. Zod validate khi chạy."
+            },
+            "js": {
+              "title": "JavaScript",
+              "content": "JS cho phép truyền bất kỳ giá trị nào ở bất kỳ đâu. Sự linh hoạt này gây bugs: undefined is not a function."
+            },
+            "ts": {
+              "title": "TypeScript",
+              "content": "TypeScript thêm hệ thống type lên JavaScript. Compiler kiểm tra types trước khi build — bắt bugs trước khi code chạy."
+            },
+            "types": {
+              "title": "Interfaces & Generics",
+              "content": "Interfaces định nghĩa hình dạng object. Generics (T) làm functions và components tái sử dụng. Enums và unions giới hạn giá trị."
+            },
+            "zod": {
+              "title": "Zod Schemas",
+              "content": "Zod validate dữ liệu khi chạy — API responses, form inputs, biến môi trường. z.infer trích xuất TypeScript types từ schemas."
+            },
+            "checks": {
+              "title": "Hai tầng",
+              "content": "TypeScript kiểm tra khi biên dịch. Zod kiểm tra khi chạy. Cùng nhau tạo type safety end-to-end từ API đến UI."
+            },
+            "safe": {
+              "title": "Ứng dụng Type-Safe",
+              "content": "Khi ứng dụng được typed đầy đủ, refactoring an toàn, autocomplete hoạt động mọi nơi, và bugs bị bắt trước khi đến người dùng."
+            }
+          }
+        },
+        "frameworks": {
+          "title": "Frameworks",
+          "description": "So sánh Next.js, Astro và React Router như full-stack React frameworks.",
+          "steps": {
+            "intro": {
+              "title": "Vượt ra CRA",
+              "content": "React bản thân chỉ là UI library. Frameworks thêm routing, SSR, data fetching và build tooling để tạo ứng dụng production."
+            },
+            "react": {
+              "title": "React App",
+              "content": "Ứng dụng React thuần (Vite) là client-side SPA. Để SEO, hiệu suất và DX, bạn cần framework phía trên."
+            },
+            "compare": {
+              "title": "Ba Frameworks",
+              "content": "Next.js là full-stack với Server Components. Astro tập trung vào content sites với Islands. React Router v7 thêm loaders/actions."
+            },
+            "nextjs": {
+              "title": "Next.js",
+              "content": "Next.js cung cấp SSR, SSG, Server Components và API routes. Đây là full-stack React framework phổ biến nhất."
+            },
+            "astro": {
+              "title": "Astro",
+              "content": "Astro ship zero JavaScript mặc định. Chỉ hydrate các 'islands' tương tác. Hoàn hảo cho sites nội dung với ít tương tác."
+            },
+            "reactRouter": {
+              "title": "React Router v7",
+              "content": "React Router v7 thêm data loading (loaders) và mutations (actions). Nó nối khoảng cách giữa SPA và full-stack."
+            },
+            "fullstack": {
+              "title": "Full-Stack React",
+              "content": "Server Components và server-side rendering làm mờ ranh giới giữa frontend và backend. Chọn framework dựa trên nhu cầu ứng dụng."
+            }
+          }
+        },
+        "advancedTopics": {
+          "title": "Chủ đề nâng cao",
+          "description": "Làm chủ Suspense, Error Boundaries, Portals và Server APIs.",
+          "steps": {
+            "intro": {
+              "title": "Patterns nâng cao",
+              "content": "Ngoài cơ bản, React cung cấp patterns mạnh mẽ để xử lý async, lỗi, thoát DOM và tích hợp server."
+            },
+            "react": {
+              "title": "React Runtime",
+              "content": "React runtime quản lý rendering, events và component lifecycle. Advanced APIs cho bạn kiểm soát chi tiết các hành vi này."
+            },
+            "overview": {
+              "title": "Bốn Patterns",
+              "content": "Suspense xử lý async loading. Error Boundaries bắt crashes. Portals render ngoài cây. Server APIs xử lý mutations."
+            },
+            "suspense": {
+              "title": "Suspense",
+              "content": "Suspense hiển thị fallback khi đợi lazy-loaded components hoặc async data. React.lazy() tự động split bundles."
+            },
+            "errorBoundary": {
+              "title": "Error Boundaries",
+              "content": "componentDidCatch bắt lỗi rendering trong children. Không có nó, một component hỏng sẽ crash toàn bộ ứng dụng."
+            },
+            "portals": {
+              "title": "Portals",
+              "content": "createPortal() render children vào DOM node khác — hữu ích cho modals, tooltips và overlays cần thoát overflow."
+            },
+            "serverApis": {
+              "title": "Server APIs",
+              "content": "React 19 thêm server-side form actions và useFormState. Forms có thể submit trực tiếp đến server functions."
+            }
+          }
+        },
+        "animation": {
+          "title": "Animation",
+          "description": "So sánh Framer Motion, react-spring và GSAP cho animations mượt mà.",
+          "steps": {
+            "intro": {
+              "title": "Tại sao Animation?",
+              "content": "Animation hướng dẫn sự chú ý, truyền đạt thay đổi trạng thái, và làm giao diện sống động. Thư viện đúng giúp dễ dàng."
+            },
+            "trigger": {
+              "title": "Hành động người dùng",
+              "content": "Animations được kích hoạt bởi tương tác người dùng, thay đổi state, hoặc mount/unmount component. Mỗi thư viện xử lý khác nhau."
+            },
+            "compare": {
+              "title": "Ba thư viện",
+              "content": "Framer Motion dùng declarative props. react-spring dùng physics engines. GSAP dùng timeline-based sequencing."
+            },
+            "framer": {
+              "title": "Framer Motion",
+              "content": "API khai báo: <motion.div animate={{x: 100}}>. Layout animations tự động. Gesture handling (drag, hover, tap) tích hợp sẵn."
+            },
+            "spring": {
+              "title": "react-spring",
+              "content": "Dựa trên vật lý: useSpring({to: {opacity: 1}}). Animations cảm giác tự nhiên vì dùng spring dynamics, không thời lượng cố định."
+            },
+            "gsap": {
+              "title": "GSAP",
+              "content": "Dựa trên timeline: gsap.timeline().to(el, {x: 100}).to(el, {y: 50}). Chuỗi phức tạp với kiểm soát chính xác."
+            },
+            "smooth": {
+              "title": "UI 60fps",
+              "content": "Cả ba nhắm 60fps. Dùng CSS transforms (không layout properties) và requestAnimationFrame cho animations mượt, không giật."
+            }
+          }
+        },
+        "mobile": {
+          "title": "Ứng dụng Mobile",
+          "description": "Xem cách React Native đưa React lên iOS và Android.",
+          "steps": {
+            "intro": {
+              "title": "React thành Native",
+              "content": "React Native cho phép xây dựng ứng dụng mobile native bằng React. Viết một lần, chạy trên iOS và Android — với hiệu suất native."
+            },
+            "react": {
+              "title": "React Code",
+              "content": "Kiến thức React chuyển giao trực tiếp. Components, hooks và state management hoạt động như nhau. Chỉ mục tiêu rendering thay đổi."
+            },
+            "rn": {
+              "title": "React Native",
+              "content": "React Native thay thế HTML elements bằng native components: <View> thay <div>, <Text> thay <p>, <Image> thay <img>."
+            },
+            "bridge": {
+              "title": "Bridge & Fabric",
+              "content": "Bridge (hoặc kiến trúc Fabric mới) chuyển đổi React components thành iOS UIKit và Android View calls."
+            },
+            "platforms": {
+              "title": "iOS & Android",
+              "content": "Mỗi nền tảng có UI native thực sự — không phải webview. Navigation, gestures và animations dùng APIs native."
+            },
+            "expo": {
+              "title": "Expo",
+              "content": "Expo đơn giản hóa phát triển React Native. Không cần Xcode/Android Studio. Push updates over-the-air. Truy cập native APIs qua managed packages."
+            },
+            "app": {
+              "title": "Ứng dụng Native",
+              "content": "Kết quả là ứng dụng native thực sự: sẵn sàng App Store và Play Store. Cùng kỹ năng React, trải nghiệm người dùng native."
+            }
+          }
+        }
+      }
+    }
+  }
+}

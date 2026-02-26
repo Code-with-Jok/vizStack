@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "es2016", "esnext"],
+    "jsx": "react-jsx",
+    "types": ["node", "react", "react-dom", "three"],
+    "esModuleInterop": true,
+    "strict": true
+  },
+  "include": ["src", "env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "dist"]
+}

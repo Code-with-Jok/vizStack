@@ -1,0 +1,617 @@
+{
+  "common": {
+    "language": "Language",
+    "switchLocale": "Tiếng Việt",
+    "home": "Home",
+    "courses": "Courses",
+    "learnMore": "Learn More",
+    "startLearning": "Start Learning",
+    "steps": "Steps",
+    "next": "Next",
+    "prev": "Previous",
+    "step": "Step",
+    "comingSoon": "Coming soon",
+    "allCourses": "All Courses",
+    "article": "Theory",
+    "tableOfContents": "Table of Contents",
+    "goToViz": "Open 3D Visualization"
+  },
+  "landing": {
+    "title": "Visualize Tech,\nMaster the Stack",
+    "subtitle": "Interactive 3D visualizations that make complex tech concepts intuitive. See how frameworks, architectures, and design patterns actually work — from the inside.",
+    "featuredCourse": "Featured Courses",
+    "exploreCourses": "Explore Courses",
+    "heroTag": "Learn by Seeing"
+  },
+  "courses": {
+    "nextjs": {
+      "title": "Fullstack Next.js",
+      "description": "Master Next.js architecture with interactive 3D visualizations. Understand System Design, Monorepo, SOLID Principles, and Tailwind CSS from the inside out.",
+      "lessons": {
+        "systemDesign": {
+          "title": "System Design Overview",
+          "description": "Visualize the complete Next.js request lifecycle — from client request through middleware, routing, server components, API layer, to database and back.",
+          "steps": {
+            "intro": {
+              "title": "The Big Picture",
+              "content": "A Next.js application is a full-stack system. Let's trace a single request through every layer to understand how it all connects."
+            },
+            "client": {
+              "title": "Client Request",
+              "content": "Everything starts with a user action in the browser. A click, a navigation, or a form submission creates an HTTP request that travels to the server."
+            },
+            "middleware": {
+              "title": "Middleware Layer",
+              "content": "Before reaching any page, the request passes through Middleware. Here you can redirect, rewrite URLs, set headers, or check authentication — all at the edge."
+            },
+            "routing": {
+              "title": "App Router",
+              "content": "Next.js uses file-system routing. The App Router maps the URL path to a file in your /app directory. Each folder becomes a route segment."
+            },
+            "serverComponent": {
+              "title": "Server Components",
+              "content": "By default, components in Next.js are Server Components. They render on the server, can directly access databases and APIs, and send only HTML to the client."
+            },
+            "apiLayer": {
+              "title": "API Layer",
+              "content": "Route Handlers (route.ts) and Server Actions provide the API layer. They handle data mutations, external API calls, and business logic."
+            },
+            "database": {
+              "title": "Database",
+              "content": "The data layer connects to your database through an ORM like Prisma or Drizzle. Queries run on the server, keeping your database credentials secure."
+            },
+            "response": {
+              "title": "Response & Streaming",
+              "content": "The server streams the rendered HTML back to the client. React hydrates the page, making it interactive. Suspense boundaries enable progressive loading."
+            }
+          }
+        }
+      }
+    },
+    "react": {
+      "title": "ReactJS",
+      "description": "Master React from fundamentals to advanced patterns with interactive 3D visualizations. Understand component trees, hooks lifecycle, state management, and rendering pipeline.",
+      "sections": {
+        "componentBasics": "Component Basics",
+        "rendering": "Rendering",
+        "hooks": "Hooks",
+        "stateManagement": "State Management",
+        "routers": "Routers",
+        "writingCss": "Writing CSS",
+        "componentLibraries": "Component Libraries",
+        "apiCalls": "API Calls",
+        "forms": "Forms",
+        "testing": "Testing",
+        "typesValidation": "Types & Validation",
+        "frameworks": "Frameworks",
+        "advancedTopics": "Advanced Topics",
+        "animation": "Animation",
+        "mobile": "Mobile Applications"
+      },
+      "lessons": {
+        "componentBasics": {
+          "title": "Component Basics",
+          "description": "Visualize React's component tree — how JSX becomes components, props flow down, and composition creates powerful UIs.",
+          "steps": {
+            "intro": {
+              "title": "The Component Tree",
+              "content": "Every React app is a tree of components. The root App component branches into child components, each responsible for a piece of the UI."
+            },
+            "app": {
+              "title": "Root Component",
+              "content": "The App component is the root of your tree. It's the entry point that React renders first. Everything else lives inside it."
+            },
+            "children": {
+              "title": "Child Components",
+              "content": "App splits into Header, Main, and Footer. Each is an independent component that receives data through props and manages its own rendering."
+            },
+            "headerChildren": {
+              "title": "Composition: Header",
+              "content": "Header composes Nav and Logo. This is composition — building complex UIs by combining simple, focused components together."
+            },
+            "mainChildren": {
+              "title": "Composition: Main Content",
+              "content": "Main contains ProductList and Sidebar. Components can be reused — the same ProductList could appear on different pages."
+            },
+            "listItems": {
+              "title": "Lists & Keys",
+              "content": "ProductList renders multiple ProductCard components from an array. Each card needs a unique 'key' prop so React can track them efficiently."
+            },
+            "deepNesting": {
+              "title": "Props Drilling",
+              "content": "ProductCard contains Button and Price. Data flows DOWN through props. When nesting gets deep, you might need Context or state management."
+            },
+            "fullTree": {
+              "title": "The Full Picture",
+              "content": "The complete component tree shows how React builds complex UIs from simple pieces. Each component is isolated, reusable, and testable."
+            }
+          }
+        },
+        "hooks": {
+          "title": "React Hooks",
+          "description": "Understand the lifecycle of useState, useEffect, and useRef — how state triggers re-renders and side effects run after paint.",
+          "steps": {
+            "intro": {
+              "title": "Hooks Overview",
+              "content": "Hooks let function components use state and side effects. They run in order, every render, and must follow the Rules of Hooks."
+            },
+            "component": {
+              "title": "The Component",
+              "content": "A function component is just a function that returns JSX. Hooks attach superpowers to it — state, effects, refs, and more."
+            },
+            "useState": {
+              "title": "useState",
+              "content": "useState gives your component memory. It returns [value, setter]. When you call the setter, React schedules a re-render with the new value."
+            },
+            "stateUpdate": {
+              "title": "State Update Cycle",
+              "content": "Calling setState doesn't update immediately. React batches updates, re-renders the component, and produces new JSX with the updated state."
+            },
+            "useEffect": {
+              "title": "useEffect",
+              "content": "useEffect runs AFTER the component renders. It's for side effects: fetching data, subscriptions, or DOM manipulation."
+            },
+            "effectLifecycle": {
+              "title": "Effect Lifecycle",
+              "content": "Effects can return a cleanup function that runs before the next effect or on unmount. This prevents memory leaks from subscriptions."
+            },
+            "useRef": {
+              "title": "useRef",
+              "content": "useRef creates a mutable reference that persists across renders without causing re-renders. Perfect for accessing DOM elements directly."
+            },
+            "renderCycle": {
+              "title": "The Render Cycle",
+              "content": "Re-render → new JSX → DOM update → useEffect runs. This cycle repeats every time state changes. Understanding it prevents infinite loops."
+            }
+          }
+        },
+        "stateManagement": {
+          "title": "State Management",
+          "description": "Compare Context, Zustand, and Jotai — see how global state flows from stores to components and triggers selective re-renders.",
+          "steps": {
+            "intro": {
+              "title": "Why State Management?",
+              "content": "When multiple components need the same data, prop drilling becomes painful. State management solutions provide a central store accessible from anywhere."
+            },
+            "store": {
+              "title": "The Global Store",
+              "content": "A global store holds application state outside the component tree. Components subscribe to it and re-render only when their slice of state changes."
+            },
+            "approaches": {
+              "title": "Three Approaches",
+              "content": "React offers multiple patterns: Context (built-in), Zustand (minimal store), and Jotai (atomic state). Each has different trade-offs."
+            },
+            "context": {
+              "title": "Context API",
+              "content": "Context uses a Provider component to share state. All children inside the Provider can access the value. But every consumer re-renders on any change."
+            },
+            "zustand": {
+              "title": "Zustand",
+              "content": "Zustand creates a store outside React. Components use useStore() with selectors to subscribe to specific slices. Only affected components re-render."
+            },
+            "jotai": {
+              "title": "Jotai (Atomic)",
+              "content": "Jotai splits state into independent atoms. Components subscribe to individual atoms with useAtom(). This is the most granular approach."
+            },
+            "rerender": {
+              "title": "Selective Re-rendering",
+              "content": "The key difference is re-render scope. Context re-renders all consumers. Zustand and Jotai only re-render components that use the changed slice."
+            }
+          }
+        },
+        "rendering": {
+          "title": "Rendering Pipeline",
+          "description": "Trace the journey from JSX to pixels — through createElement, Virtual DOM, Reconciliation, and DOM patches.",
+          "steps": {
+            "intro": {
+              "title": "How React Renders",
+              "content": "React doesn't manipulate the DOM directly. It uses a Virtual DOM to calculate the minimum changes needed, then applies them in a batch."
+            },
+            "jsx": {
+              "title": "JSX",
+              "content": "JSX looks like HTML but it's JavaScript. Babel/SWC transforms <div> into React.createElement('div') calls at build time."
+            },
+            "createElement": {
+              "title": "React.createElement",
+              "content": "createElement returns a plain object describing the UI element — its type, props, and children. This is a 'React Element'."
+            },
+            "vdom": {
+              "title": "Virtual DOM",
+              "content": "The Virtual DOM is a lightweight JavaScript tree of React Elements. It's cheap to create and compare — unlike real DOM nodes."
+            },
+            "twoTrees": {
+              "title": "Two Trees",
+              "content": "On re-render, React creates a NEW Virtual DOM tree. It now has two trees: the previous one and the new one. Time to find the differences."
+            },
+            "diffing": {
+              "title": "Reconciliation (Diffing)",
+              "content": "React's diffing algorithm compares both trees node-by-node. It uses 'keys' to match list items and identifies what changed, was added, or removed."
+            },
+            "patches": {
+              "title": "Minimal Patches",
+              "content": "From the diff, React creates a minimal set of DOM operations. Instead of rebuilding everything, it only touches what actually changed."
+            },
+            "domUpdate": {
+              "title": "DOM Update & Paint",
+              "content": "React applies the patches to the real DOM in a single batch. The browser then repaints the screen. This is why React is fast — minimal DOM work."
+            }
+          }
+        },
+        "routers": {
+          "title": "Routers",
+          "description": "Understand how client-side routing works with React Router and Tanstack Router.",
+          "steps": {
+            "intro": {
+              "title": "Client-Side Routing",
+              "content": "Single-page apps don't reload the page on navigation. A router intercepts URL changes and swaps components without a server round-trip."
+            },
+            "url": {
+              "title": "URL Change",
+              "content": "When the user clicks a link or types a URL, the router captures the change using the History API. No HTTP request is sent."
+            },
+            "router": {
+              "title": "The Router",
+              "content": "The Router component wraps your app, listening for URL changes. It's the brain that decides which component to show for each path."
+            },
+            "routeConfig": {
+              "title": "Route Configuration",
+              "content": "Routes map URL patterns to components. You define them declaratively — each <Route path='/about'> renders the About component."
+            },
+            "pageRender": {
+              "title": "Page Rendering",
+              "content": "When a URL matches a route, the router renders the matched component inside an Outlet. Nested routes enable layout composition."
+            },
+            "navigation": {
+              "title": "Programmatic Navigation",
+              "content": "useNavigate() and <Link> allow navigation without full page reloads. Link renders an anchor tag, useNavigate works from event handlers."
+            },
+            "fullCycle": {
+              "title": "The Full Cycle",
+              "content": "Navigation → URL update → route match → component render → new navigation. This cycle creates a seamless, app-like experience."
+            }
+          }
+        },
+        "writingCss": {
+          "title": "Writing CSS",
+          "description": "Compare CSS Modules, Tailwind CSS, and Panda CSS for styling React components.",
+          "steps": {
+            "intro": {
+              "title": "Styling in React",
+              "content": "React doesn't enforce a styling approach. You can use vanilla CSS, CSS Modules, utility frameworks, or CSS-in-JS solutions."
+            },
+            "component": {
+              "title": "The Component",
+              "content": "Every React component needs styles. The question is: where do styles live, how are they scoped, and how do they bundle?"
+            },
+            "approaches": {
+              "title": "Three Approaches",
+              "content": "CSS Modules scope styles locally. Tailwind uses utility classes. Panda CSS generates type-safe, atomic CSS at build time."
+            },
+            "cssModules": {
+              "title": "CSS Modules",
+              "content": "Import styles from .module.css files. Class names are automatically hashed to prevent collisions. Scoped by default, zero runtime."
+            },
+            "tailwind": {
+              "title": "Tailwind CSS",
+              "content": "Compose utility classes directly in JSX. The JIT compiler generates only the CSS you use. No context switching between files."
+            },
+            "pandaCss": {
+              "title": "Panda CSS",
+              "content": "Define design tokens and recipes. Panda extracts styles at build time, generating atomic CSS with full TypeScript support."
+            },
+            "bundle": {
+              "title": "Output",
+              "content": "All three approaches produce optimized CSS bundles. The choice depends on team preference, project size, and type-safety needs."
+            }
+          }
+        },
+        "componentLibraries": {
+          "title": "Component Libraries",
+          "description": "Explore Material UI, Shadcn UI, Chakra UI, and headless component primitives.",
+          "steps": {
+            "intro": {
+              "title": "Why Libraries?",
+              "content": "Building accessible, polished UI from scratch is hard. Component libraries provide battle-tested, accessible components out of the box."
+            },
+            "app": {
+              "title": "Your App",
+              "content": "Your app needs buttons, modals, forms, and navigation. You can build them yourself or use a library that handles edge cases."
+            },
+            "compare": {
+              "title": "Three Approaches",
+              "content": "Material UI ships pre-styled components. Shadcn UI copies code into your project. Chakra UI provides runtime-styled primitives."
+            },
+            "mui": {
+              "title": "Material UI",
+              "content": "MUI provides a ThemeProvider for global styling. Components follow Material Design guidelines. Highly customizable via the sx prop."
+            },
+            "shadcn": {
+              "title": "Shadcn UI",
+              "content": "Shadcn copies component code directly into your project. Built on Radix primitives + Tailwind CSS. You own and customize every line."
+            },
+            "chakra": {
+              "title": "Chakra UI",
+              "content": "Chakra uses runtime CSS-in-JS with style props. Components are composable and accessible by default."
+            },
+            "headless": {
+              "title": "Headless Primitives",
+              "content": "Radix UI and React Aria provide unstyled, accessible primitives. You bring your own styles. Maximum flexibility, zero visual opinions."
+            }
+          }
+        },
+        "apiCalls": {
+          "title": "API Calls",
+          "description": "Learn how to fetch data with Axios, React Query, SWR, and Apollo Client.",
+          "steps": {
+            "intro": {
+              "title": "Data Fetching",
+              "content": "React components need data from APIs. The challenge is managing loading states, errors, caching, and re-fetching efficiently."
+            },
+            "component": {
+              "title": "The Component",
+              "content": "A component declares what data it needs. The fetching library handles when and how to get it, and what to show while loading."
+            },
+            "fetch": {
+              "title": "The Fetch Layer",
+              "content": "Between your component and the API sits a data layer. It can be simple (Axios) or smart (React Query with caching)."
+            },
+            "axios": {
+              "title": "Axios",
+              "content": "Axios is an HTTP client. It handles requests, interceptors, and transforms, but YOU manage state, loading, and caching manually."
+            },
+            "reactQuery": {
+              "title": "React Query / SWR",
+              "content": "These libraries add smart caching, background re-fetching, optimistic updates, and pagination. The cache prevents redundant requests."
+            },
+            "apollo": {
+              "title": "Apollo Client",
+              "content": "Apollo is a GraphQL client with a normalized cache. It queries exactly the fields you need and automatically updates the UI when data changes."
+            },
+            "api": {
+              "title": "The API",
+              "content": "REST endpoints return fixed shapes. GraphQL lets clients request exactly what they need. Both work with any fetching strategy."
+            }
+          }
+        },
+        "forms": {
+          "title": "Forms",
+          "description": "Compare React Hook Form and Formik for form management and validation.",
+          "steps": {
+            "intro": {
+              "title": "Form Management",
+              "content": "Forms are the primary way users input data. Managing values, validation, errors, and submission state gets complex quickly."
+            },
+            "form": {
+              "title": "The <form>",
+              "content": "HTML forms submit data natively. In React, we intercept onSubmit to handle data in JavaScript, enabling richer validation and UX."
+            },
+            "compare": {
+              "title": "Two Libraries",
+              "content": "React Hook Form uses uncontrolled inputs for performance. Formik uses controlled inputs for simplicity. Both handle validation well."
+            },
+            "rhf": {
+              "title": "React Hook Form",
+              "content": "register() connects inputs without re-rendering on every keystroke. Uncontrolled approach means fewer re-renders and better performance."
+            },
+            "formik": {
+              "title": "Formik",
+              "content": "Formik's <Field> components are controlled — values live in Formik's state. Simple mental model but more re-renders on large forms."
+            },
+            "validation": {
+              "title": "Validation (Zod)",
+              "content": "Both libraries integrate with Zod for schema validation. Define your schema once and get type-safe form data automatically."
+            },
+            "submit": {
+              "title": "Submission",
+              "content": "onSubmit receives validated data. Handle API calls, show success/error states, and reset the form — all with type safety."
+            }
+          }
+        },
+        "testing": {
+          "title": "Testing",
+          "description": "Understand the testing pyramid with Vitest, Jest, Testing Library, Cypress, and Playwright.",
+          "steps": {
+            "intro": {
+              "title": "Why Testing?",
+              "content": "Tests give you confidence that your code works correctly. They catch bugs before users do and make refactoring safe."
+            },
+            "code": {
+              "title": "Source Code",
+              "content": "Your React app has components, hooks, and utilities. Each needs different types of tests depending on its complexity."
+            },
+            "pyramid": {
+              "title": "Testing Pyramid",
+              "content": "Unit tests are fast and many. Integration tests verify components work together. E2E tests simulate real user flows — fewer but most realistic."
+            },
+            "unit": {
+              "title": "Unit Tests",
+              "content": "Vitest and Jest run isolated tests for functions and hooks. They're blazing fast and give instant feedback during development."
+            },
+            "integration": {
+              "title": "Integration Tests",
+              "content": "React Testing Library renders components and tests user interactions. Test behavior, not implementation details — 'click button, see result'."
+            },
+            "e2e": {
+              "title": "E2E Tests",
+              "content": "Cypress and Playwright launch a real browser and simulate user journeys. They catch issues that unit tests can't — network, routing, animations."
+            },
+            "ci": {
+              "title": "CI/CD",
+              "content": "All tests run in the CI pipeline before deployment. Green tests = confident deploy. The testing pyramid ensures fast feedback with thorough coverage."
+            }
+          }
+        },
+        "typesValidation": {
+          "title": "Types & Validation",
+          "description": "See how TypeScript and Zod provide compile-time and runtime type safety.",
+          "steps": {
+            "intro": {
+              "title": "Type Safety",
+              "content": "JavaScript is dynamically typed — errors appear at runtime. TypeScript catches them at compile time. Zod validates at runtime."
+            },
+            "js": {
+              "title": "JavaScript",
+              "content": "JS lets you pass any value anywhere. This flexibility causes bugs: undefined is not a function, cannot read property of null."
+            },
+            "ts": {
+              "title": "TypeScript",
+              "content": "TypeScript adds a type system on top of JavaScript. The compiler checks types before building — catching bugs before code runs."
+            },
+            "types": {
+              "title": "Interfaces & Generics",
+              "content": "Interfaces define object shapes. Generics (T) make functions and components reusable across types. Enums and unions restrict values."
+            },
+            "zod": {
+              "title": "Zod Schemas",
+              "content": "Zod validates data at runtime — API responses, form inputs, environment variables. z.infer extracts TypeScript types from schemas."
+            },
+            "checks": {
+              "title": "Two Layers",
+              "content": "TypeScript checks at compile time. Zod checks at runtime. Together they create end-to-end type safety from API to UI."
+            },
+            "safe": {
+              "title": "Type-Safe App",
+              "content": "When your app is fully typed, refactoring is safe, autocomplete works everywhere, and bugs are caught before they reach users."
+            }
+          }
+        },
+        "frameworks": {
+          "title": "Frameworks",
+          "description": "Compare Next.js, Astro, and React Router as full-stack React frameworks.",
+          "steps": {
+            "intro": {
+              "title": "Beyond CRA",
+              "content": "React itself is just a UI library. Frameworks add routing, SSR, data fetching, and build tooling to create production apps."
+            },
+            "react": {
+              "title": "React App",
+              "content": "A plain React app (Vite) is a client-side SPA. For SEO, performance, and DX, you need a framework on top."
+            },
+            "compare": {
+              "title": "Three Frameworks",
+              "content": "Next.js is full-stack with Server Components. Astro focuses on content sites with Islands. React Router v7 adds loaders/actions."
+            },
+            "nextjs": {
+              "title": "Next.js",
+              "content": "Next.js provides SSR, SSG, Server Components, and API routes. It's the most popular full-stack React framework."
+            },
+            "astro": {
+              "title": "Astro",
+              "content": "Astro ships zero JavaScript by default. It hydrates only interactive 'islands'. Perfect for content-heavy sites with minimal interactivity."
+            },
+            "reactRouter": {
+              "title": "React Router v7",
+              "content": "React Router v7 adds data loading (loaders) and mutations (actions). It bridges the gap between SPA and full-stack."
+            },
+            "fullstack": {
+              "title": "Full-Stack React",
+              "content": "Server Components and server-side rendering blur the line between frontend and backend. Choose a framework based on your app's needs."
+            }
+          }
+        },
+        "advancedTopics": {
+          "title": "Advanced Topics",
+          "description": "Master Suspense, Error Boundaries, Portals, and Server APIs.",
+          "steps": {
+            "intro": {
+              "title": "Advanced Patterns",
+              "content": "Beyond basics, React provides powerful patterns for handling async, errors, DOM escape hatches, and server integration."
+            },
+            "react": {
+              "title": "React Runtime",
+              "content": "The React runtime manages rendering, events, and component lifecycle. Advanced APIs give you fine-grained control over these behaviors."
+            },
+            "overview": {
+              "title": "Four Patterns",
+              "content": "Suspense handles async loading. Error Boundaries catch crashes. Portals render outside the tree. Server APIs handle mutations."
+            },
+            "suspense": {
+              "title": "Suspense",
+              "content": "Suspense shows a fallback while waiting for lazy-loaded components or async data. React.lazy() splits bundles automatically."
+            },
+            "errorBoundary": {
+              "title": "Error Boundaries",
+              "content": "componentDidCatch catches rendering errors in children. Without it, one broken component crashes your entire app."
+            },
+            "portals": {
+              "title": "Portals",
+              "content": "createPortal() renders children into a different DOM node — useful for modals, tooltips, and overlays that need to escape overflow."
+            },
+            "serverApis": {
+              "title": "Server APIs",
+              "content": "React 19 adds server-side form actions and useFormState. Forms can submit directly to server functions without API endpoints."
+            }
+          }
+        },
+        "animation": {
+          "title": "Animation",
+          "description": "Compare Framer Motion, react-spring, and GSAP for smooth UI animations.",
+          "steps": {
+            "intro": {
+              "title": "Why Animate?",
+              "content": "Animation guides attention, communicates state changes, and makes interfaces feel alive. The right library makes it easy."
+            },
+            "trigger": {
+              "title": "User Action",
+              "content": "Animations are triggered by user interactions, state changes, or component mount/unmount. Each library handles these differently."
+            },
+            "compare": {
+              "title": "Three Libraries",
+              "content": "Framer Motion uses declarative props. react-spring uses physics engines. GSAP uses timeline-based sequencing."
+            },
+            "framer": {
+              "title": "Framer Motion",
+              "content": "Declarative API: <motion.div animate={{x: 100}}>. Layout animations are automatic. Gesture handling (drag, hover, tap) built in."
+            },
+            "spring": {
+              "title": "react-spring",
+              "content": "Physics-based: useSpring({to: {opacity: 1}}). Animations feel natural because they use spring dynamics, not fixed durations."
+            },
+            "gsap": {
+              "title": "GSAP",
+              "content": "Timeline-based: gsap.timeline().to(el, {x: 100}).to(el, {y: 50}). Complex choreographed sequences with precise control."
+            },
+            "smooth": {
+              "title": "60fps UI",
+              "content": "All three target 60fps. Use CSS transforms (not layout properties) and requestAnimationFrame for smooth, jank-free animations."
+            }
+          }
+        },
+        "mobile": {
+          "title": "Mobile Applications",
+          "description": "See how React Native brings React to iOS and Android.",
+          "steps": {
+            "intro": {
+              "title": "React Goes Native",
+              "content": "React Native lets you build native mobile apps using React. Write once, run on iOS and Android — with native performance."
+            },
+            "react": {
+              "title": "React Code",
+              "content": "Your React knowledge transfers directly. Components, hooks, and state management work the same. Only the rendering target changes."
+            },
+            "rn": {
+              "title": "React Native",
+              "content": "React Native replaces HTML elements with native components: <View> instead of <div>, <Text> instead of <p>, <Image> instead of <img>."
+            },
+            "bridge": {
+              "title": "Bridge & Fabric",
+              "content": "The bridge (or new Fabric architecture) translates React components into native iOS UIKit and Android View calls."
+            },
+            "platforms": {
+              "title": "iOS & Android",
+              "content": "Each platform gets truly native UI — not a webview. Navigation, gestures, and animations use platform-native APIs."
+            },
+            "expo": {
+              "title": "Expo",
+              "content": "Expo simplifies React Native development. No Xcode/Android Studio needed. Push updates over-the-air. Access native APIs through managed packages."
+            },
+            "app": {
+              "title": "Native App",
+              "content": "The result is a real native app: App Store and Play Store ready. Same React skills, native user experience."
+            }
+          }
+        }
+      }
+    }
+  }
+}
