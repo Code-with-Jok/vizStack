@@ -185,13 +185,14 @@ export function EditorModal({
           <h3 className="text-base font-extrabold text-text-primary flex-1">
             ✏️ {vi ? "Trình chỉnh sửa Markdown" : "Markdown Editor"}
           </h3>
-          <button
+          {/* <button
             onClick={handleGenerateViz}
-            disabled={generating}
+            disabled={true}
+            // disabled={generating}
             className={`btn-primary py-1.5! px-3.5! text-[0.75rem]! mr-3 shadow-none! ${generating ? "opacity-50 cursor-not-allowed" : "hover:opacity-90 active:scale-95 transition-all"}`}
           >
             {generating ? "⏳ AI..." : "🧠 Auto-Generate 2D/3D UI"}
-          </button>
+          </button> */}
           <span className="text-[0.75rem] text-text-muted mr-4 font-medium">
             {sorted.length} {vi ? "chương" : "chapters"}
           </span>

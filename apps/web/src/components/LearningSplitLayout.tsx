@@ -76,8 +76,8 @@ export function LearningSplitLayout({
               )}
             </div>
           ) : (
-            <Allotment defaultSizes={desktopPaneSizes} className="m-0!">
-              <Allotment.Pane minSize={200} className="bg-white">
+            <Allotment className="m-0!">
+              <Allotment.Pane minSize={200} maxSize={300} className="bg-white">
                 <LearningToc
                   items={items}
                   activeIndex={activeIndex}

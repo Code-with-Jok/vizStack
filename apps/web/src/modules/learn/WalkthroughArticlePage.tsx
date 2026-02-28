@@ -108,7 +108,18 @@ export function WalkthroughArticlePage({
     return textToVisualization(textContent, activeChapter.title_en);
   }, [activeChapter, vi]);
 
-  // Type definition can stay
+  if (walkthrough === undefined || chapters === undefined) {
+    return <FullPageLoader />;
+  }
+
+  if (!walkthrough || !chapters) {
+    return (
+      <div className="flex items-center justify-center h-[calc(100vh-48px)] text-text-muted">
+        Walkthrough not found.
+      </div>
+    );
+  }
+
   type Chapter = NonNullable<typeof chapters>[number];
 
   useEffect(() => {
@@ -154,19 +165,6 @@ export function WalkthroughArticlePage({
       })),
     [sectionChapters, chapterTitleDrafts, vi, isAdmin, debouncedUpdateChapter]
   );
-
-  // Conditional returns moved AFTER all hooks
-  if (walkthrough === undefined || chapters === undefined) {
-    return <FullPageLoader />;
-  }
-
-  if (!walkthrough || !chapters) {
-    return (
-      <div className="flex items-center justify-center h-[calc(100vh-48px)] text-text-muted">
-        Walkthrough not found.
-      </div>
-    );
-  }
 
   const baseWalkthroughTitle = vi ? walkthrough.title_vi : walkthrough.title_en;
   const effectiveWalkthroughTitle =

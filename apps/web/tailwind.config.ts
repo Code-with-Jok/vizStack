@@ -1,9 +1,28 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  content: ["./src/**/*.{ts,tsx}", "./messages/**/*.{json}", "./app/**/*.{ts,tsx}"],
+  content: [
+    "./src/**/*.{ts,tsx}",
+    "./messages/**/*.{json}",
+    "./app/**/*.{ts,tsx}",
+  ],
   theme: {
     extend: {
+      zIndex: {
+        auto: "auto",
+        0: "0",
+        10: "10",
+        20: "20",
+        30: "30",
+        40: "40",
+        50: "50",
+        75: "75",
+        100: "100",
+        999: "999",
+        1000: "1000",
+        1100: "1100",
+        1200: "1200",
+      },
       colors: {
         "bg-primary": "var(--color-bg-primary)",
         "bg-secondary": "var(--color-bg-secondary)",

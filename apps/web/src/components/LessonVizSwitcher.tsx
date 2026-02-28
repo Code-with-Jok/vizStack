@@ -112,21 +112,22 @@ export function LessonVizSwitcher({
     return findBestNodeId(focusLabel, resolved2d.nodes);
   }, [focusLabel, resolved2d.nodes]);
 
-  useEffect(() => {
-    if (focusLabel) {
-      setSelectedNodeId(focusNodeId);
-    } else if (vizKey !== undefined) {
-      setSelectedNodeId(null);
-    }
-  }, [focusLabel, focusNodeId, vizKey]);
+  // useEffect(() => {
+  //   if (focusLabel) {
+  //     setSelectedNodeId(focusNodeId);
+  //   } else if (vizKey !== undefined) {
+  //     setSelectedNodeId(null);
+  //   }
+  // }, [focusLabel, focusNodeId, vizKey]);
 
   const keyBase = vizKey ?? "viz";
 
   return (
     <div className={cn("viz-switcher", className)}>
       <div className="viz-toggle" role="tablist" aria-label="Viz mode">
-        <button
+        {/* <button
           type="button"
+          disabled
           className={cn(
             "viz-toggle-button",
             mode === "2d" && "viz-toggle-button-active"
@@ -135,7 +136,7 @@ export function LessonVizSwitcher({
           aria-pressed={mode === "2d"}
         >
           2D
-        </button>
+        </button> */}
         <button
           type="button"
           className={cn(
