@@ -4,6 +4,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "next/navigation";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { LocaleToggle } from "./LocaleToggle";
+import { cn } from "@/lib/cn";
 
 export function Navbar() {
   const t = useTranslations();
@@ -39,46 +40,19 @@ export function Navbar() {
       })()
     : "";
 
+  const lessonTitle =
+    lessonSlug
+      ?.replace(/-/g, " ")
+      .replace(/\b\w/g, (c) => c.toUpperCase()) ?? "";
+
   return (
-    <nav
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "10px 24px",
-        borderBottom: "1px solid var(--color-border)",
-        background: "rgba(10, 10, 15, 0.88)",
-        backdropFilter: "blur(16px)",
-        position: "sticky",
-        top: 0,
-        zIndex: 100,
-        minHeight: "48px",
-        flexShrink: 0,
-      }}
-    >
+    <nav className="navbar">
       {/* Left: Logo + Breadcrumbs */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "8px",
-          minWidth: 0,
-        }}
-      >
+      <div className="navbar-left">
         {/* Logo */}
         <span
           onClick={() => router.push(`/${locale}`)}
-          style={{
-            fontSize: "1.1rem",
-            fontWeight: 800,
-            letterSpacing: "-0.02em",
-            cursor: "pointer",
-            background:
-              "linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-orange-warm))",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            flexShrink: 0,
-          }}
+          className="navbar-logo"
         >
           VizStack
         </span>
@@ -86,24 +60,13 @@ export function Navbar() {
         {/* Breadcrumb separator + course */}
         {(isCoursePage || isLessonPage) && (
           <>
-            <span
-              style={{ color: "var(--color-text-muted)", fontSize: "0.85rem" }}
-            >
-              /
-            </span>
+            <span className="navbar-separator">/</span>
             <span
               onClick={() => router.push(`/${locale}/learn/${courseKey}`)}
-              style={{
-                color: isLessonPage
-                  ? "var(--color-text-muted)"
-                  : "var(--color-accent-cyan)",
-                fontSize: "0.85rem",
-                fontWeight: 600,
-                cursor: "pointer",
-                textDecoration: "none",
-                transition: "color 0.2s",
-                whiteSpace: "nowrap",
-              }}
+              className={cn(
+                "navbar-course-link",
+                isLessonPage && "navbar-course-link-muted"
+              )}
             >
               {courseTitle}
             </span>
@@ -113,26 +76,14 @@ export function Navbar() {
         {/* Lesson breadcrumb */}
         {isLessonPage && lessonSlug && (
           <>
+            <span className="navbar-separator">/</span>
             <span
-              style={{ color: "var(--color-text-muted)", fontSize: "0.85rem" }}
+              className={cn(
+                "navbar-lesson-title",
+                isArticlePage ? "navbar-lesson-muted" : "navbar-lesson-active"
+              )}
             >
-              /
-            </span>
-            <span
-              style={{
-                color: isArticlePage
-                  ? "var(--color-text-muted)"
-                  : "var(--color-accent-cyan)",
-                fontSize: "0.85rem",
-                fontWeight: 500,
-                whiteSpace: "nowrap",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-              }}
-            >
-              {lessonSlug
-                .replace(/-/g, " ")
-                .replace(/\b\w/g, (c) => c.toUpperCase())}
+              {lessonTitle}
             </span>
           </>
         )}
@@ -140,21 +91,8 @@ export function Navbar() {
         {/* Article badge */}
         {isArticlePage && (
           <>
-            <span
-              style={{ color: "var(--color-text-muted)", fontSize: "0.85rem" }}
-            >
-              /
-            </span>
-            <span
-              style={{
-                fontSize: "0.8rem",
-                fontWeight: 600,
-                color: "var(--color-accent-green)",
-                display: "flex",
-                alignItems: "center",
-                gap: "4px",
-              }}
-            >
+            <span className="navbar-separator">/</span>
+            <span className="navbar-article-badge">
               📖 {t("navbar.article")}
             </span>
           </>
@@ -162,34 +100,14 @@ export function Navbar() {
       </div>
 
       {/* Right: Actions */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "10px",
-          flexShrink: 0,
-        }}
-      >
+      <div className="navbar-right">
         {/* Article link on lesson pages (not on article pages themselves) */}
         {isLessonPage && !isArticlePage && lessonSlug && (
           <button
             onClick={() =>
               router.push(`/${locale}/learn/${courseKey}/${lessonSlug}/article`)
             }
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "5px",
-              padding: "5px 12px",
-              background: "var(--color-bg-card)",
-              border: "1px solid var(--color-border)",
-              borderRadius: "8px",
-              color: "var(--color-text-secondary)",
-              cursor: "pointer",
-              fontSize: "0.8rem",
-              fontWeight: 500,
-              transition: "all 0.2s ease",
-            }}
+            className={cn("navbar-pill-button", "navbar-pill-ghost")}
           >
             📖 {t("navbar.theory")}
           </button>
@@ -201,21 +119,7 @@ export function Navbar() {
             onClick={() =>
               router.push(`/${locale}/learn/${courseKey}/${lessonSlug}`)
             }
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "5px",
-              padding: "5px 12px",
-              background:
-                "linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-orange-warm))",
-              border: "none",
-              borderRadius: "8px",
-              color: "#fff",
-              cursor: "pointer",
-              fontSize: "0.8rem",
-              fontWeight: 600,
-              transition: "all 0.2s ease",
-            }}
+            className={cn("navbar-pill-button", "navbar-pill-primary")}
           >
             🧊 {t("navbar.viz3d")}
           </button>
@@ -230,18 +134,7 @@ export function Navbar() {
           </SignedIn>
           <SignedOut>
             <SignInButton mode="modal">
-              <button
-                style={{
-                  display: "inline-block",
-                  padding: "6px 16px",
-                  borderRadius: "20px",
-                  fontSize: "0.8rem",
-                  fontWeight: 600,
-                  color: "var(--color-accent-cyan)",
-                  border: "1px solid var(--color-border-hover)",
-                  background: "var(--color-glow-cyan)",
-                }}
-              >
+              <button className="btn-secondary">
                 {t("navbar.signIn")}
               </button>
             </SignInButton>

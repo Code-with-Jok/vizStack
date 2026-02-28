@@ -1,0 +1,50 @@
+import type { Config } from "tailwindcss";
+
+const config: Config = {
+  content: ["./src/**/*.{ts,tsx}", "./messages/**/*.{json}", "./app/**/*.{ts,tsx}"],
+  theme: {
+    extend: {
+      colors: {
+        "bg-primary": "var(--color-bg-primary)",
+        "bg-secondary": "var(--color-bg-secondary)",
+        "bg-card": "var(--color-bg-card)",
+        "bg-soft": "var(--color-bg-soft)",
+        "text-primary": "var(--color-text-primary)",
+        "text-secondary": "var(--color-text-secondary)",
+        "text-muted": "var(--color-text-muted)",
+        "text-strong": "var(--color-text-strong)",
+        "accent-cyan": "var(--color-accent-cyan)",
+        "accent-cyan-soft": "var(--color-accent-cyan-soft)",
+        "accent-cyan-bright": "var(--color-accent-cyan-bright)",
+        "accent-teal": "var(--color-accent-teal)",
+        "accent-teal-deep": "var(--color-accent-teal-deep)",
+        "accent-teal-strong": "var(--color-accent-teal-strong)",
+        "accent-orange": "var(--color-accent-orange)",
+        "accent-orange-warm": "var(--color-accent-orange-warm)",
+        "accent-orange-deep": "var(--color-accent-orange-deep)",
+        "accent-orange-strong": "var(--color-accent-orange-strong)",
+        "accent-green": "var(--color-accent-green)",
+        "accent-lime": "var(--color-accent-lime)",
+        "accent-pink": "var(--color-accent-pink)",
+        "accent-red": "var(--color-accent-red)",
+        "accent-blue": "var(--color-accent-blue)",
+        "accent-violet": "var(--color-accent-violet)",
+        "accent-purple": "var(--color-accent-purple)",
+        "accent-purple-deep": "var(--color-accent-purple-deep)",
+        "accent-amber": "var(--color-accent-amber)",
+        "react-blue": "var(--color-react-blue)",
+        "status-success": "var(--color-status-success)",
+        "status-warning": "var(--color-status-warning)",
+        "status-error": "var(--color-status-error)",
+        white: "var(--color-white)",
+        "neutral-100": "var(--color-neutral-100)",
+        "neutral-200": "var(--color-neutral-200)",
+        "neutral-400": "var(--color-neutral-400)",
+        grid: "var(--color-grid)",
+      },
+    },
+  },
+  plugins: [],
+};
+
+export default config;

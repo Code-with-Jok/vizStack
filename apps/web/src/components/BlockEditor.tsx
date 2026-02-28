@@ -9,6 +9,7 @@ import {
   useCreateBlockNote,
   getDefaultReactSlashMenuItems,
   SuggestionMenuController,
+  SideMenuController,
 } from "@blocknote/react";
 import {
   BlockNoteSchema,
@@ -35,15 +36,15 @@ const AlertBlock = createReactBlockSpec(
     render: (props) => {
       // Provide Notion-like callout styling
       const bgColors: Record<string, string> = {
-        info: "rgba(86, 217, 209, 0.15)",
-        warning: "rgba(245, 158, 11, 0.15)",
-        error: "rgba(239, 68, 68, 0.15)",
-        success: "rgba(16, 185, 129, 0.15)",
+        info: "var(--color-alert-info-bg)",
+        warning: "var(--color-alert-warning-bg)",
+        error: "var(--color-alert-error-bg)",
+        success: "var(--color-alert-success-bg)",
       };
       const borderColors: Record<string, string> = {
         info: "var(--color-accent-cyan)",
         warning: "var(--color-accent-orange)",
-        error: "#ef4444",
+        error: "var(--color-accent-red)",
         success: "var(--color-accent-green)",
       };
 
@@ -102,36 +103,46 @@ export default function BlockEditor({
   editable = true,
 }: BlockEditorProps) {
   const [ready, setReady] = useState(false);
-
   // 3. Initialize Editor with the Schema
   const editor = useCreateBlockNote({ schema });
 
+  // Move ready state setting to a separate effect to ensure editor is created
+  useEffect(() => {
+    if (editor) setReady(true);
+  }, [editor]);
+
   const initializedRef = useRef(false);
+  const latestOnChange = useRef(onChange);
+  const debounceTimer = useRef<number | null>(null);
+
+  // Always keep a ref to the latest onChange so debounce callback is up to date
+  useEffect(() => {
+    latestOnChange.current = onChange;
+  }, [onChange]);
 
   useEffect(() => {
     async function initEditor() {
-      if (initializedRef.current) return;
+      if (initializedRef.current || !ready) return;
       initializedRef.current = true;
 
-      if (!initialContent) {
-        setReady(true);
-        return;
-      }
+      // Ensure we have something to render
+      if (!initialContent) return;
 
       try {
         const parsed = JSON.parse(initialContent);
         editor.replaceBlocks(editor.document, parsed);
-        setReady(true);
       } catch (e) {
+        // Fallback to markdown if JSON parsing fails
         const blocks = await editor.tryParseMarkdownToBlocks(initialContent);
         editor.replaceBlocks(editor.document, blocks);
-        setReady(true);
-        onChange(JSON.stringify(editor.document, null, 2));
+        // Sync the initial conversion back to Convex via parent's onChange
+        const snapshot = JSON.stringify(editor.document, null, 2);
+        latestOnChange.current(snapshot);
       }
     }
 
     initEditor();
-  }, [editor]);
+  }, [editor, ready, initialContent]); // Added initialContent to sync if it's the first load
 
   // 4. Create Slash Menu Item for the Alert Block
   const insertAlert = (editor: typeof schema.BlockNoteEditor) => {
@@ -172,9 +183,19 @@ export default function BlockEditor({
       theme="light"
       slashMenu={false} // Disable default slash menu to use our custom one
       onChange={() => {
-        onChange(JSON.stringify(editor.document, null, 2));
+        if (!ready) return;
+        // Debounce expensive JSON serialization so typing in the editor
+        // (and in other inputs like the title fields) stays responsive.
+        if (debounceTimer.current !== null) {
+          window.clearTimeout(debounceTimer.current);
+        }
+        debounceTimer.current = window.setTimeout(() => {
+          const snapshot = JSON.stringify(editor.document, null, 2);
+          latestOnChange.current(snapshot);
+        }, 500); // Increased debounce slightly for stability during movements
       }}
     >
+      <SideMenuController />
       <SuggestionMenuController
         triggerCharacter={"/"}
         getItems={async (query) => {

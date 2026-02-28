@@ -11,6 +11,13 @@ export const listByWalkthrough = query({
   },
 });
 
+export const getById = query({
+  args: { id: v.id("chapters") },
+  handler: async (ctx, { id }) => {
+    return ctx.db.get(id);
+  },
+});
+
 export const create = mutation({
   args: {
     walkthroughId: v.id("walkthroughs"),
@@ -21,6 +28,9 @@ export const create = mutation({
     content_vi: v.optional(v.string()),
     blocks: v.optional(v.any()), // Array of ContentBlock
     vizConfig: v.optional(v.any()),
+    knowledgeGraph: v.optional(v.any()),
+    visualization2dSchema: v.optional(v.any()),
+    visualization3dSchema: v.optional(v.any()),
   },
   handler: async (ctx, args) => {
     return ctx.db.insert("chapters", args);
@@ -37,6 +47,9 @@ export const update = mutation({
     blocks: v.optional(v.any()),
     order: v.optional(v.number()),
     vizConfig: v.optional(v.any()),
+    knowledgeGraph: v.optional(v.any()),
+    visualization2dSchema: v.optional(v.any()),
+    visualization3dSchema: v.optional(v.any()),
   },
   handler: async (ctx, { id, ...rest }) => {
     const updates: Record<string, unknown> = {};

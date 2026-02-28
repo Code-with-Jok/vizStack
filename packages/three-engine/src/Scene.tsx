@@ -10,6 +10,7 @@ interface SceneProps {
   cameraPosition?: [number, number, number];
   enableOrbit?: boolean;
   background?: string;
+  onPointerMissed?: () => void;
 }
 
 export function Scene({
@@ -17,11 +18,13 @@ export function Scene({
   cameraPosition = [0, 0, 12],
   enableOrbit = true,
   background = "#fef9f6",
+  onPointerMissed,
 }: SceneProps) {
   return (
     <Canvas
       style={{ width: "100%", height: "100%" }}
       gl={{ antialias: true, alpha: true }}
+      onPointerMissed={onPointerMissed}
     >
       <primitive object={new THREE.Color(background)} attach="background" />
       <PerspectiveCamera makeDefault position={cameraPosition} fov={50} />

@@ -16,674 +16,530 @@ import { z } from "zod";
 const MODEL_AI = process.env.MODEL_AI || "gemini-2.0-flash";
 const USE_MOCK = process.env.USE_MOCK_VIZ === "true";
 
+const ORCHESTRATOR_SYSTEM_PROMPT = `You are an AI Orchestrator for a learning visualization system.
+Follow the requested flow strictly and return JSON only.`;
+
+const knowledgeGraphSchema = z.object({
+  knowledge_graph: z.object({
+    module: z.object({
+      id: z.string(),
+      title: z.string(),
+    }),
+    chapter: z.object({
+      id: z.string(),
+      title: z.string(),
+    }),
+    lesson: z.object({
+      id: z.string(),
+      title: z.string(),
+    }),
+    nodes: z.array(
+      z.object({
+        id: z.string(),
+        label: z.string(),
+        type: z.string(),
+      })
+    ),
+    edges: z.array(
+      z.object({
+        from: z.string(),
+        to: z.string(),
+        relation: z.string(),
+      })
+    ),
+  }),
+});
+
+const visualization2dSchema = z.object({
+  visualization_2d_schema: z.object({
+    nodes: z.array(
+      z.object({
+        id: z.string(),
+        label: z.string(),
+        x: z.number(),
+        y: z.number(),
+        color: z.string(),
+        width: z.optional(z.number()),
+        height: z.optional(z.number()),
+      })
+    ),
+    edges: z.array(
+      z.object({
+        fromId: z.string(),
+        toId: z.string(),
+        label: z.optional(z.string()),
+      })
+    ),
+    viewport: z
+      .object({
+        width: z.number(),
+        height: z.number(),
+      })
+      .optional(),
+  }),
+});
+
+const visualization3dSchema = z.object({
+  visualization_3d_schema: z.object({
+    nodes: z.array(
+      z.object({
+        id: z.string(),
+        label: z.string(),
+        x: z.number(),
+        y: z.number(),
+        color: z.string(),
+        glowColor: z.string(),
+        width: z.optional(z.number()),
+        height: z.optional(z.number()),
+      })
+    ),
+    connections: z.array(
+      z.object({
+        fromIndex: z.number(),
+        toIndex: z.number(),
+      })
+    ),
+    cameraPosition: z
+      .array(z.number())
+      .describe("Camera position [x, y, z], usually [0, 1, 16]"),
+  }),
+});
+
 /* ─── Mock vizConfigs for testing ─── */
 
-const MOCK_VIZ: Record<
-  string,
-  {
-    nodes: {
-      id: string;
-      label: string;
-      x: number;
-      y: number;
-      color: string;
-      glowColor: string;
-    }[];
-    connections: { fromIndex: number; toIndex: number }[];
-    cameraPosition: [number, number, number];
-  }
-> = {
-  // Lesson 1: What is a Component?
-  "What is a Component?": {
-    nodes: [
-      {
-        id: "component",
-        label: "Component",
-        x: 0,
-        y: 5,
-        color: "#7c3aed",
-        glowColor: "#7c3aed",
-      },
-      {
-        id: "function",
-        label: "JS Function",
-        x: -3.5,
-        y: 3,
-        color: "#56D9D1",
-        glowColor: "#56D9D1",
-      },
-      {
-        id: "jsx_return",
-        label: "Returns JSX",
-        x: 3.5,
-        y: 3,
-        color: "#56D9D1",
-        glowColor: "#56D9D1",
-      },
-      {
-        id: "button",
-        label: "Button",
-        x: -5,
-        y: 1,
-        color: "#10b981",
-        glowColor: "#10b981",
-      },
-      {
-        id: "props",
-        label: "Props { label }",
-        x: -1.5,
-        y: 1,
-        color: "#FF9B62",
-        glowColor: "#FF9B62",
-      },
-      {
-        id: "html_tag",
-        label: "<button>",
-        x: 2,
-        y: 1,
-        color: "#EC4899",
-        glowColor: "#EC4899",
-      },
-      {
-        id: "classname",
-        label: "className",
-        x: 5.5,
-        y: 1,
-        color: "#EC4899",
-        glowColor: "#EC4899",
-      },
-      {
-        id: "uppercase",
-        label: "UPPERCASE ✓",
-        x: 0,
-        y: -1.5,
-        color: "#10b981",
-        glowColor: "#10b981",
-      },
-    ],
-    connections: [
-      { fromIndex: 0, toIndex: 1 },
-      { fromIndex: 0, toIndex: 2 },
-      { fromIndex: 1, toIndex: 3 },
-      { fromIndex: 1, toIndex: 4 },
-      { fromIndex: 2, toIndex: 5 },
-      { fromIndex: 2, toIndex: 6 },
-      { fromIndex: 3, toIndex: 7 },
-    ],
-    cameraPosition: [0, 1, 16],
-  },
+type MockVizType = {
+  nodes: {
+    id: string;
+    label: string;
+    x: number;
+    y: number;
+    color: string;
+    glowColor: string;
+    width?: number;
+    height?: number;
+  }[];
+  connections: { fromIndex: number; toIndex: number }[];
+  cameraPosition: [number, number, number];
+};
 
-  // Lesson 2: The Component Tree
-  "The Component Tree": {
+const MOCK_VIZ: Record<string, MockVizType> = {
+  Component: {
     nodes: [
       {
-        id: "app",
-        label: "App (Root)",
+        id: "react_component",
+        label: "React Component",
         x: 0,
-        y: 5.5,
+        y: 6.5,
         color: "#7c3aed",
-        glowColor: "#7c3aed",
+        glowColor: "#a78bfa",
       },
       {
-        id: "header",
-        label: "Header",
-        x: -4.5,
-        y: 3.5,
-        color: "#56D9D1",
-        glowColor: "#56D9D1",
-      },
-      {
-        id: "main",
-        label: "Main",
-        x: 0,
-        y: 3.5,
-        color: "#10b981",
-        glowColor: "#10b981",
-      },
-      {
-        id: "footer",
-        label: "Footer",
-        x: 4.5,
-        y: 3.5,
-        color: "#56D9D1",
-        glowColor: "#56D9D1",
-      },
-      {
-        id: "nav",
-        label: "Nav",
-        x: -6,
-        y: 1.5,
-        color: "#FF9B62",
-        glowColor: "#FF9B62",
-      },
-      {
-        id: "logo",
-        label: "Logo",
-        x: -3,
-        y: 1.5,
-        color: "#FF9B62",
-        glowColor: "#FF9B62",
-      },
-      {
-        id: "productList",
-        label: "ProductList",
-        x: -1,
-        y: 1.5,
-        color: "#EC4899",
-        glowColor: "#EC4899",
-      },
-      {
-        id: "sidebar",
-        label: "Sidebar",
-        x: 2,
-        y: 1.5,
-        color: "#10b981",
-        glowColor: "#10b981",
-      },
-      {
-        id: "data_flow",
-        label: "Props ↓ Data Flow",
-        x: 0,
-        y: -1.5,
-        color: "#FF9B62",
-        glowColor: "#FF9B62",
-      },
-    ],
-    connections: [
-      { fromIndex: 0, toIndex: 1 },
-      { fromIndex: 0, toIndex: 2 },
-      { fromIndex: 0, toIndex: 3 },
-      { fromIndex: 1, toIndex: 4 },
-      { fromIndex: 1, toIndex: 5 },
-      { fromIndex: 2, toIndex: 6 },
-      { fromIndex: 2, toIndex: 7 },
-      { fromIndex: 6, toIndex: 8 },
-    ],
-    cameraPosition: [0, 1, 16],
-  },
-
-  // Lesson 3: JSX
-  JSX: {
-    nodes: [
-      {
-        id: "jsx",
-        label: "JSX Code",
+        id: "function_component",
+        label: "Function Component (+ Hooks)",
         x: -4,
-        y: 5,
-        color: "#7c3aed",
-        glowColor: "#7c3aed",
+        y: 4,
+        color: "#10b981",
+        glowColor: "#34d399",
       },
       {
-        id: "compiler",
-        label: "Babel / SWC",
-        x: 0,
-        y: 5,
-        color: "#FF9B62",
-        glowColor: "#FF9B62",
-      },
-      {
-        id: "createElement",
-        label: "React.createElement()",
+        id: "class_component",
+        label: "Class Component (Legacy)",
         x: 4,
-        y: 5,
-        color: "#10b981",
-        glowColor: "#10b981",
-      },
-      {
-        id: "h1",
-        label: "<h1>",
-        x: -5,
-        y: 3,
-        color: "#56D9D1",
-        glowColor: "#56D9D1",
-      },
-      {
-        id: "className",
-        label: "className",
-        x: -1.75,
-        y: 3,
+        y: 4,
         color: "#EC4899",
-        glowColor: "#EC4899",
+        glowColor: "#f472b6",
       },
       {
-        id: "htmlFor",
-        label: "htmlFor",
-        x: 1.75,
-        y: 3,
-        color: "#EC4899",
-        glowColor: "#EC4899",
-      },
-      {
-        id: "curly",
-        label: "{ } Expressions",
-        x: 5,
-        y: 3,
-        color: "#FF9B62",
-        glowColor: "#FF9B62",
-      },
-      {
-        id: "greeting",
-        label: "Greeting()",
-        x: -2.5,
+        id: "reusability",
+        label: "Tái sử dụng",
+        x: -6,
         y: 1,
         color: "#56D9D1",
-        glowColor: "#56D9D1",
+        glowColor: "#99f6e4",
       },
       {
-        id: "ternary",
-        label: "Ternary ? :",
-        x: 1,
+        id: "modularity",
+        label: "Mô-đun hóa",
+        x: -3,
         y: 1,
-        color: "#10b981",
-        glowColor: "#10b981",
+        color: "#3B82F6",
+        glowColor: "#93c5fd",
       },
       {
-        id: "date",
-        label: "new Date()",
-        x: 4.5,
+        id: "maintainability",
+        label: "Bảo trì dễ dàng",
+        x: 0,
         y: 1,
         color: "#10b981",
-        glowColor: "#10b981",
+        glowColor: "#34d399",
+      },
+      {
+        id: "encapsulation",
+        label: "Tính đóng gói",
+        x: 3,
+        y: 1,
+        color: "#F59E0B",
+        glowColor: "#fcd34d",
+      },
+      {
+        id: "composition",
+        label: "Khả năng kết hợp",
+        x: 6,
+        y: 1,
+        color: "#EF4444",
+        glowColor: "#fca5a5",
+      },
+      {
+        id: "testing",
+        label: "Dễ kiểm thử",
+        x: 0,
+        y: -2,
+        color: "#10b981",
+        glowColor: "#34d399",
       },
     ],
     connections: [
       { fromIndex: 0, toIndex: 1 },
-      { fromIndex: 1, toIndex: 2 },
+      { fromIndex: 0, toIndex: 2 },
       { fromIndex: 0, toIndex: 3 },
       { fromIndex: 0, toIndex: 4 },
       { fromIndex: 0, toIndex: 5 },
       { fromIndex: 0, toIndex: 6 },
-      { fromIndex: 6, toIndex: 7 },
-      { fromIndex: 7, toIndex: 8 },
-      { fromIndex: 7, toIndex: 9 },
-    ],
-    cameraPosition: [0, 2, 16],
-  },
-
-  // Lesson 4: Props — Passing Data
-  "Props — Passing Data": {
-    nodes: [
-      {
-        id: "parent",
-        label: "Parent Component",
-        x: 0,
-        y: 5.5,
-        color: "#7c3aed",
-        glowColor: "#7c3aed",
-      },
-      {
-        id: "props_data",
-        label: "Props { name, price }",
-        x: 0,
-        y: 3.5,
-        color: "#FF9B62",
-        glowColor: "#FF9B62",
-      },
-      {
-        id: "product_card",
-        label: "ProductCard",
-        x: 0,
-        y: 1.5,
-        color: "#56D9D1",
-        glowColor: "#56D9D1",
-      },
-      {
-        id: "name_display",
-        label: "<h3>{name}</h3>",
-        x: -3.5,
-        y: -1,
-        color: "#10b981",
-        glowColor: "#10b981",
-      },
-      {
-        id: "price_display",
-        label: "<span>{price}</span>",
-        x: 0,
-        y: -1,
-        color: "#10b981",
-        glowColor: "#10b981",
-      },
-      {
-        id: "children_prop",
-        label: "children prop",
-        x: 3.5,
-        y: -1,
-        color: "#EC4899",
-        glowColor: "#EC4899",
-      },
-    ],
-    connections: [
-      { fromIndex: 0, toIndex: 1 },
-      { fromIndex: 1, toIndex: 2 },
-      { fromIndex: 2, toIndex: 3 },
-      { fromIndex: 2, toIndex: 4 },
-      { fromIndex: 2, toIndex: 5 },
-    ],
-    cameraPosition: [0, 1, 16],
-  },
-
-  // Lesson 5: State — Dynamic Data
-  "State — Dynamic Data": {
-    nodes: [
-      {
-        id: "counter",
-        label: "Counter Component",
-        x: 0,
-        y: 5.5,
-        color: "#7c3aed",
-        glowColor: "#7c3aed",
-      },
-      {
-        id: "use_state",
-        label: "useState(0)",
-        x: -4.5,
-        y: 3.5,
-        color: "#FF9B62",
-        glowColor: "#FF9B62",
-      },
-      {
-        id: "state_val",
-        label: "count (Value)",
-        x: -2.75,
-        y: 1.5,
-        color: "#10b981",
-        glowColor: "#10b981",
-      },
-      {
-        id: "state_setter",
-        label: "setCount (Setter)",
-        x: -6.25,
-        y: 1.5,
-        color: "#EC4899",
-        glowColor: "#EC4899",
-      },
-      {
-        id: "ui_p",
-        label: "<p>{count}</p>",
-        x: 3,
-        y: 3.5,
-        color: "#56D9D1",
-        glowColor: "#56D9D1",
-      },
-      {
-        id: "btn_inc",
-        label: "button +1",
-        x: 1.5,
-        y: 1.5,
-        color: "#56D9D1",
-        glowColor: "#56D9D1",
-      },
-      {
-        id: "btn_dec",
-        label: "button -1",
-        x: 4.5,
-        y: 1.5,
-        color: "#56D9D1",
-        glowColor: "#56D9D1",
-      },
-      {
-        id: "re_render",
-        label: "Auto Re-render ↺",
-        x: 0,
-        y: -1,
-        color: "#FF9B62",
-        glowColor: "#FF9B62",
-      },
-    ],
-    connections: [
-      { fromIndex: 0, toIndex: 1 },
-      { fromIndex: 1, toIndex: 2 },
-      { fromIndex: 1, toIndex: 3 },
-      { fromIndex: 0, toIndex: 4 },
-      { fromIndex: 4, toIndex: 5 },
-      { fromIndex: 4, toIndex: 6 },
-      { fromIndex: 2, toIndex: 7 },
-    ],
-    cameraPosition: [0, 1, 16],
-  },
-
-  // Lesson 6: Conditional Rendering
-  "Conditional Rendering": {
-    nodes: [
-      {
-        id: "login_status",
-        label: "LoginStatus",
-        x: 0,
-        y: 5.5,
-        color: "#7c3aed",
-        glowColor: "#7c3aed",
-      },
-      {
-        id: "condition",
-        label: "isLoggedIn ?",
-        x: 0,
-        y: 3.5,
-        color: "#FF9B62",
-        glowColor: "#FF9B62",
-      },
-      {
-        id: "dash",
-        label: "UserDashboard ✅",
-        x: -3.5,
-        y: 1.5,
-        color: "#10b981",
-        glowColor: "#10b981",
-      },
-      {
-        id: "form",
-        label: "LoginForm ❌",
-        x: 3.5,
-        y: 1.5,
-        color: "#EC4899",
-        glowColor: "#EC4899",
-      },
-      {
-        id: "and_op",
-        label: "&& Operator",
-        x: -4.5,
-        y: -0.5,
-        color: "#56D9D1",
-        glowColor: "#56D9D1",
-      },
-      {
-        id: "logout",
-        label: "LogoutButton",
-        x: -4.5,
-        y: -2.5,
-        color: "#56D9D1",
-        glowColor: "#56D9D1",
-      },
-    ],
-    connections: [
-      { fromIndex: 0, toIndex: 1 },
-      { fromIndex: 1, toIndex: 2 },
-      { fromIndex: 1, toIndex: 3 },
-      { fromIndex: 2, toIndex: 4 },
-      { fromIndex: 4, toIndex: 5 },
-    ],
-    cameraPosition: [0, 1, 16],
-  },
-
-  // Lesson 7: Composition Pattern
-  "Composition Pattern": {
-    nodes: [
-      {
-        id: "layout",
-        label: "Layout (Composition)",
-        x: 0,
-        y: 5.5,
-        color: "#7c3aed",
-        glowColor: "#7c3aed",
-      },
-      {
-        id: "header",
-        label: "Header",
-        x: -5,
-        y: 3.5,
-        color: "#56D9D1",
-        glowColor: "#56D9D1",
-      },
-      {
-        id: "main",
-        label: "Main",
-        x: 0,
-        y: 3.5,
-        color: "#56D9D1",
-        glowColor: "#56D9D1",
-      },
-      {
-        id: "footer",
-        label: "Footer",
-        x: 5,
-        y: 3.5,
-        color: "#56D9D1",
-        glowColor: "#56D9D1",
-      },
-      {
-        id: "nav",
-        label: "Nav",
-        x: -6,
-        y: 1.5,
-        color: "#10b981",
-        glowColor: "#10b981",
-      },
-      {
-        id: "logo",
-        label: "Logo",
-        x: -3.5,
-        y: 1.5,
-        color: "#10b981",
-        glowColor: "#10b981",
-      },
-      {
-        id: "productList",
-        label: "ProductList",
-        x: -1,
-        y: 1.5,
-        color: "#10b981",
-        glowColor: "#10b981",
-      },
-      {
-        id: "sidebar",
-        label: "Sidebar",
-        x: 2,
-        y: 1.5,
-        color: "#10b981",
-        glowColor: "#10b981",
-      },
-      {
-        id: "one_thing",
-        label: "DO ONE THING WELL",
-        x: 0,
-        y: -1,
-        color: "#FF9B62",
-        glowColor: "#FF9B62",
-      },
-    ],
-    connections: [
-      { fromIndex: 0, toIndex: 1 },
-      { fromIndex: 0, toIndex: 2 },
-      { fromIndex: 0, toIndex: 3 },
-      { fromIndex: 1, toIndex: 4 },
-      { fromIndex: 1, toIndex: 5 },
-      { fromIndex: 2, toIndex: 6 },
-      { fromIndex: 2, toIndex: 7 },
+      { fromIndex: 0, toIndex: 7 },
       { fromIndex: 6, toIndex: 8 },
     ],
-    cameraPosition: [0, 1, 16],
+    cameraPosition: [0, 4, 18],
   },
 };
 
+MOCK_VIZ["What is a Component?"] = MOCK_VIZ["Component"];
+MOCK_VIZ["State — Dynamic Data"] = MOCK_VIZ["Component"]; // mapping for title_vi test
+
 /* ─── Action ─── */
+
+const DEFAULT_VIEWPORT = { width: 900, height: 560 };
+
+type LessonMeta = {
+  moduleId: string;
+  moduleTitle: string;
+  chapterId: string;
+  chapterTitle: string;
+  lessonId: string;
+  lessonTitle: string;
+};
+
+const toId = (value: string) =>
+  value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+
+const titleizeSlug = (value: string) =>
+  value
+    .replace(/[-_]+/g, " ")
+    .split(" ")
+    .filter(Boolean)
+    .map((part) => part[0]?.toUpperCase() + part.slice(1))
+    .join(" ");
+
+const extractTextFromBlockNote = (content?: string) => {
+  if (!content) return "";
+  const trimmed = content.trim();
+  if (!trimmed) return "";
+
+  try {
+    const parsed = JSON.parse(trimmed);
+    if (!Array.isArray(parsed)) return content;
+
+    const lines: string[] = [];
+    const readInline = (inline: unknown) => {
+      if (typeof inline === "string") return inline;
+      if (
+        inline &&
+        typeof inline === "object" &&
+        "text" in inline &&
+        typeof (inline as { text?: string }).text === "string"
+      ) {
+        return (inline as { text: string }).text;
+      }
+      return "";
+    };
+    const walkBlock = (block: any) => {
+      if (!block) return;
+      const parts: string[] = [];
+
+      if (typeof block.text === "string") {
+        parts.push(block.text);
+      }
+
+      if (Array.isArray(block.content)) {
+        for (const inline of block.content) {
+          const text = readInline(inline);
+          if (text) parts.push(text);
+        }
+      }
+
+      if (block.props && typeof block.props.code === "string") {
+        parts.push(block.props.code);
+      }
+
+      if (parts.length > 0) {
+        lines.push(parts.join(""));
+      }
+
+      if (Array.isArray(block.children)) {
+        block.children.forEach(walkBlock);
+      }
+    };
+
+    parsed.forEach(walkBlock);
+    return lines.join("\n");
+  } catch {
+    return content;
+  }
+};
+
+const buildLessonContent = (meta: LessonMeta, lessonBody: string) => {
+  const body = lessonBody.trim();
+  return [
+    `MODULE: ${meta.moduleTitle}`,
+    `CHAPTER: ${meta.chapterTitle}`,
+    `LESSON: ${meta.lessonTitle}`,
+    "",
+    "CONTENT:",
+    body || "No content provided.",
+  ].join("\n");
+};
+
+const buildParserPrompt = (lessonContent: string) => `
+Analyze the lesson content and extract a knowledge graph JSON.
+Return JSON only using the schema provided.
+
+REQUIREMENTS:
+- Identify module, chapter, and lesson titles from the content.
+- Create 6-16 concept nodes with clear labels and type (concept, example, rule, or component).
+- Create edges with a short relation label (e.g. "uses", "returns", "includes").
+- Use stable snake_case ids for nodes.
+
+INPUT:
+${lessonContent}
+`;
+
+const build2dPrompt = (knowledgeGraph: unknown) => `
+Generate a 2D visualization schema from the knowledge graph.
+Return JSON only using the schema provided.
+
+RULES:
+- Keep node ids identical to the knowledge graph ids.
+- Use a readable layout (root/top concepts above, details below).
+- Keep x range roughly -6 to 6 and y range -4 to 6 unless needed.
+- Provide a viewport size around ${DEFAULT_VIEWPORT.width}x${DEFAULT_VIEWPORT.height}.
+- Ensure every edge maps to valid node ids.
+
+KNOWLEDGE_GRAPH:
+${JSON.stringify(knowledgeGraph, null, 2)}
+`;
+
+const build3dPrompt = (knowledgeGraph: unknown, viz2d: unknown) => `
+Map the 2D schema into a 3D visualization schema.
+Return JSON only using the schema provided.
+
+RULES:
+- Keep node ordering identical to the 2D schema.
+- Use the same x/y positions, add glowColor for each node.
+- Convert 2D edges into connections using node index positions.
+- Provide a cameraPosition like [0, 1, 16].
+
+KNOWLEDGE_GRAPH:
+${JSON.stringify(knowledgeGraph, null, 2)}
+
+VISUALIZATION_2D_SCHEMA:
+${JSON.stringify(viz2d, null, 2)}
+`;
+
+const buildMockOutput = (
+  meta: LessonMeta,
+  mockViz: (typeof MOCK_VIZ)[string]
+) => {
+  const knowledgeGraph = {
+    module: { id: meta.moduleId, title: meta.moduleTitle },
+    chapter: { id: meta.chapterId, title: meta.chapterTitle },
+    lesson: { id: meta.lessonId, title: meta.lessonTitle },
+    nodes: mockViz.nodes.map((node) => ({
+      id: node.id,
+      label: node.label,
+      type: "concept",
+    })),
+    edges: mockViz.connections.map((conn) => ({
+      from: mockViz.nodes[conn.fromIndex]?.id ?? "unknown",
+      to: mockViz.nodes[conn.toIndex]?.id ?? "unknown",
+      relation: "relates_to",
+    })),
+  };
+
+  const visualization2dSchema = {
+    nodes: mockViz.nodes.map((node) => ({
+      id: node.id,
+      label: node.label,
+      x: node.x,
+      y: node.y,
+      color: node.color,
+      width: node.width,
+      height: node.height,
+    })),
+    edges: mockViz.connections.map((conn) => ({
+      fromId: mockViz.nodes[conn.fromIndex]?.id ?? "unknown",
+      toId: mockViz.nodes[conn.toIndex]?.id ?? "unknown",
+    })),
+    viewport: DEFAULT_VIEWPORT,
+  };
+
+  const visualization3dSchema = {
+    nodes: mockViz.nodes,
+    connections: mockViz.connections,
+    cameraPosition: mockViz.cameraPosition,
+  };
+
+  return {
+    knowledgeGraph,
+    visualization2dSchema,
+    visualization3dSchema,
+  };
+};
 
 export const generateVizFromContent = action({
   args: {
     chapterId: v.id("chapters"),
     order: v.number(),
-    title_en: v.string(),
-    content_en: v.string(),
+    title: v.string(),
+    content: v.string(),
   },
-  handler: async (ctx, { chapterId, order, title_en, content_en }) => {
-    // ── Mock mode: match by single chapter title ──
-    if (USE_MOCK) {
-      const mockViz = MOCK_VIZ[title_en];
-      if (mockViz) {
-        console.log(`[vizAI] Using mock for chapter: "${title_en}"`);
-        await ctx.runMutation(api.chapters.update, {
-          id: chapterId,
-          vizConfig: mockViz,
-        });
-        return {
-          success: true,
-          nodeCount: mockViz.nodes.length,
-          connectionCount: mockViz.connections.length,
-        };
-      }
-      console.log(
-        `[vizAI] No mock found for: "${title_en}", falling through to AI`
+  handler: async (ctx, { chapterId, order, title, content }) => {
+    const chapter = await ctx.runQuery(api.chapters.getById, { id: chapterId });
+    if (!chapter) {
+      throw new Error(`Chapter not found: ${chapterId}`);
+    }
+
+    const walkthrough = await ctx.runQuery(api.walkthroughs.getById, {
+      id: chapter.walkthroughId,
+    });
+
+    console.log({ chapter });
+
+    const moduleId = walkthrough?.courseSlug ?? "module";
+    const moduleTitle = walkthrough?.courseSlug
+      ? titleizeSlug(walkthrough.courseSlug)
+      : "Module";
+    const chapterTitle = walkthrough?.title_en ?? `Chapter ${order}`;
+    const chapterSlug = walkthrough?.slug ?? toId(chapterTitle);
+    const lessonTitle = title || chapter.title_en || `Lesson ${order}`;
+    const lessonId = toId(lessonTitle) || `lesson_${order}`;
+
+    const meta: LessonMeta = {
+      moduleId,
+      moduleTitle,
+      chapterId: chapterSlug,
+      chapterTitle,
+      lessonId,
+      lessonTitle,
+    };
+
+    const rawLessonBody = extractTextFromBlockNote(content);
+    if (!rawLessonBody || rawLessonBody.trim() === "") {
+      throw new Error(
+        "Nội dung bài học trống! Vui lòng nhập nội dung trước khi tạo 2D/3D."
       );
     }
 
-    // ── Real AI mode ──
+    const lessonBody =
+      rawLessonBody.length > 4000
+        ? `${rawLessonBody.slice(0, 4000)}...`
+        : rawLessonBody;
+    const lessonContent = buildLessonContent(meta, lessonBody);
+
+    // -- Mock mode: match by single chapter title --
+    if (USE_MOCK) {
+      const mockKey = title || chapter.title_en;
+      const mockViz = MOCK_VIZ[mockKey] ?? MOCK_VIZ[title];
+      if (mockViz) {
+        console.log(`[vizAI] Using mock for chapter: "${mockKey}"`);
+        const { knowledgeGraph, visualization2dSchema, visualization3dSchema } =
+          buildMockOutput(meta, mockViz);
+
+        await ctx.runMutation(api.chapters.update, {
+          id: chapterId,
+          vizConfig: visualization3dSchema,
+          knowledgeGraph,
+          visualization2dSchema,
+          visualization3dSchema,
+        });
+
+        return {
+          success: true,
+          knowledge_graph: knowledgeGraph,
+          visualization_2d_schema: visualization2dSchema,
+          visualization_3d_schema: visualization3dSchema,
+          nodeCount: visualization3dSchema.nodes.length,
+          connectionCount: visualization3dSchema.connections.length,
+        };
+      }
+      console.log(
+        `[vizAI] No mock found for: "${mockKey}", falling through to AI`
+      );
+    }
+
+    // -- Real AI mode --
     const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY;
-    if (!apiKey)
+    if (!apiKey) {
       throw new Error("Missing GOOGLE_GENERATIVE_AI_API_KEY env var");
+    }
 
     const google = createGoogleGenerativeAI({ apiKey });
 
-    const chapterSummary = `## Chapter ${order}: ${title_en}\n${content_en.slice(0, 500)}`;
-
-    const prompt = `You are a visualization architect. Given the following educational chapter about a programming topic, generate a 3D component tree visualization that illustrates the concepts discussed in this specific chapter.
-
-CHAPTER CONTENT:
-${chapterSummary}
-
-RULES:
-- Create 6-15 nodes representing the key concepts/components in the content
-- Arrange nodes in a tree hierarchy (root at top y=5, children below)
-- x range: -6 to 6, y range: -4 to 6
-- Use visually distinct colors: blues (#1e3a5f), purples (#2d1b4e), greens (#1b3d2f), pinks (#3b1b3d), oranges (#3d2d1b)
-- Glow colors should be bright: cyan (#00d4ff), purple (#7c3aed), green (#10b981), pink (#ec4899), orange (#f59e0b)
-- Connections use fromIndex/toIndex (0-based index in nodes array)
-- This is a STATIC visualization — all nodes and connections are always visible`;
-
-    const { object: vizConfig } = await generateObject({
+    const { object: knowledgeGraphObject } = await generateObject({
       model: google(MODEL_AI),
-      schema: z.object({
-        nodes: z.array(
-          z.object({
-            id: z.string().describe("Unique identifier"),
-            label: z.string().describe("Display name"),
-            x: z.number().describe("X position (-6 to 6)"),
-            y: z.number().describe("Y position (-4 to 6)"),
-            color: z.string().describe("Base hex color"),
-            glowColor: z.string().describe("Bright hex glow color"),
-          })
-        ),
-        connections: z.array(
-          z.object({
-            fromIndex: z.number().describe("Parent node index"),
-            toIndex: z.number().describe("Child node index"),
-          })
-        ),
-        cameraPosition: z
-          .tuple([z.number(), z.number(), z.number()])
-          .describe("Camera position [x, y, z], usually [0, 1, 16]"),
-      }),
-      prompt,
-      temperature: 0.3,
+      schema: knowledgeGraphSchema,
+      system: ORCHESTRATOR_SYSTEM_PROMPT,
+      prompt: buildParserPrompt(lessonContent),
+      temperature: 0.2,
     });
+    const knowledgeGraph = knowledgeGraphObject.knowledge_graph;
 
-    // Save vizConfig to the specific chapter
+    const { object: visualization2dObject } = await generateObject({
+      model: google(MODEL_AI),
+      schema: visualization2dSchema,
+      system: ORCHESTRATOR_SYSTEM_PROMPT,
+      prompt: build2dPrompt(knowledgeGraph),
+      temperature: 0.2,
+    });
+    const visualization2dSchemaResult =
+      visualization2dObject.visualization_2d_schema;
+
+    const { object: visualization3dObject } = await generateObject({
+      model: google(MODEL_AI),
+      schema: visualization3dSchema,
+      system: ORCHESTRATOR_SYSTEM_PROMPT,
+      prompt: build3dPrompt(knowledgeGraph, visualization2dSchemaResult),
+      temperature: 0.2,
+    });
+    const visualization3dSchemaResult =
+      visualization3dObject.visualization_3d_schema;
+
     await ctx.runMutation(api.chapters.update, {
       id: chapterId,
-      vizConfig,
+      vizConfig: visualization3dSchemaResult,
+      knowledgeGraph,
+      visualization2dSchema: visualization2dSchemaResult,
+      visualization3dSchema: visualization3dSchemaResult,
     });
 
     return {
       success: true,
-      nodeCount: vizConfig.nodes.length,
-      connectionCount: vizConfig.connections.length,
+      knowledge_graph: knowledgeGraph,
+      visualization_2d_schema: visualization2dSchemaResult,
+      visualization_3d_schema: visualization3dSchemaResult,
+      nodeCount: visualization3dSchemaResult.nodes.length,
+      connectionCount: visualization3dSchemaResult.connections.length,
     };
   },
 });
