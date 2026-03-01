@@ -5,21 +5,7 @@ import { useMutation, useAction } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import type { Id } from "../../convex/_generated/dataModel";
 
-/* ─── Types ─────────────────────────────── */
-export interface ContentBlock {
-  type: string;
-  text_en?: string;
-  text_vi?: string;
-  code?: string;
-  language?: string;
-  filename?: string;
-  calloutType?: string;
-  headers?: string[];
-  rows?: string[][];
-  imageUrl?: string;
-  caption_en?: string;
-  caption_vi?: string;
-}
+import { ContentBlock } from "./useChapterEditor";
 
 export interface Chapter {
   _id: Id<"chapters">;
@@ -47,7 +33,7 @@ export function useEditorModalState({
   walkthroughId,
   locale,
 }: UseEditorModalStateProps) {
-  const [activeIdx, setActiveIdx] = useState<number | null>(null);
+  const [activeId, setActiveId] = useState<Id<"chapters"> | null>(null);
   const [titleEn, setTitleEn] = useState("");
   const [titleVi, setTitleVi] = useState("");
   const [contentEn, setContentEn] = useState("");
@@ -67,25 +53,25 @@ export function useEditorModalState({
   const vi = locale === "vi";
 
   const selectChapter = useCallback(
-    (i: number) => {
-      const ch = sorted[i];
+    (id: Id<"chapters">) => {
+      const ch = chapters.find((c) => c._id === id);
       if (!ch) return;
-      setActiveIdx(i);
+      setActiveId(id);
       setTitleEn(ch.title_en);
       setTitleVi(ch.title_vi);
       setContentEn(ch.content_en || "");
       setContentVi(ch.content_vi || "");
       setDirty(false);
     },
-    [sorted]
+    [chapters]
   );
 
   const handleSave = async () => {
-    if (activeIdx === null) return;
+    if (activeId === null) return;
     setSaving(true);
     try {
       await updateChapter({
-        id: sorted[activeIdx]._id,
+        id: activeId,
         title_en: titleEn,
         title_vi: titleVi,
         content_en: contentEn,
@@ -100,11 +86,11 @@ export function useEditorModalState({
   };
 
   const handleDelete = async () => {
-    if (activeIdx === null) return;
+    if (activeId === null) return;
     if (!confirm(vi ? "Xóa chương này?" : "Delete this chapter?")) return;
     try {
-      await deleteChapter({ id: sorted[activeIdx]._id });
-      setActiveIdx(null);
+      await deleteChapter({ id: activeId });
+      setActiveId(null);
     } catch (err) {
       console.error("Failed to delete chapter:", err);
     }
@@ -128,8 +114,8 @@ export function useEditorModalState({
   };
 
   const handleGenerateViz = async () => {
-    if (sorted.length === 0 || activeIdx === null) return;
-    const currentChapter = sorted[activeIdx];
+    if (sorted.length === 0 || activeId === null) return;
+    const currentChapter = sorted.find((c) => c._id === activeId);
     if (!currentChapter) return;
 
     setGenerating(true);
@@ -141,7 +127,7 @@ export function useEditorModalState({
 
     try {
       const result = await generateViz({
-        chapterId: currentChapter._id,
+        chapterId: activeId,
         order: currentChapter.order,
         title: tab === "vi" ? titleVi : titleEn,
         content: tab === "vi" ? contentVi : contentEn,
@@ -162,7 +148,7 @@ export function useEditorModalState({
   };
 
   return {
-    activeIdx,
+    activeId,
     titleEn,
     setTitleEn,
     titleVi,

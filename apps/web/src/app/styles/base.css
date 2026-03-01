@@ -88,6 +88,12 @@
     background-color: var(--color-accent-cyan);
     color: var(--color-bg-primary);
   }
+
+  @media (max-width: 768px) {
+    :root {
+      --color-bg-glass: rgba(255, 255, 255, 0.4);
+    }
+  }
 }
 
 :root {

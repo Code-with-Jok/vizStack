@@ -17,19 +17,32 @@ export function LessonStepPage({
 }: LessonStepPageProps) {
   const t = useTranslations();
   const [currentStep, setCurrentStep] = useState(0);
-  const stepKey = steps[currentStep];
+  const stepKey = steps.length > 0 ? steps[currentStep] : undefined;
 
   const handleNext = () => {
-    if (currentStep < steps.length - 1) {
+    if (steps.length > 0 && currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     }
   };
 
   const handlePrev = () => {
-    if (currentStep > 0) {
+    if (steps.length > 0 && currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
   };
+
+  if (steps.length === 0) {
+    return (
+      <LessonLayout
+        visualization={
+          <div className="p-8 text-center text-muted-foreground">
+            No content available for this lesson.
+          </div>
+        }
+        controls={null}
+      />
+    );
+  }
 
   return (
     <LessonLayout
@@ -40,8 +53,8 @@ export function LessonStepPage({
           totalSteps={steps.length}
           onNext={handleNext}
           onPrev={handlePrev}
-          stepTitle={t(`${i18nBaseKey}.${stepKey}.title`)}
-          stepContent={t(`${i18nBaseKey}.${stepKey}.content`)}
+          stepTitle={stepKey ? t(`${i18nBaseKey}.${stepKey}.title`) : ""}
+          stepContent={stepKey ? t(`${i18nBaseKey}.${stepKey}.content`) : ""}
           nextLabel={t("common.next")}
           prevLabel={t("common.prev")}
           stepLabel={t("common.step")}

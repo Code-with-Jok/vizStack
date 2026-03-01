@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import type { Id } from "../../convex/_generated/dataModel";
@@ -21,7 +21,7 @@ export interface ContentBlock {
   _tempId?: string;
 }
 
-interface Chapter {
+export interface Chapter {
   _id: Id<"chapters">;
   order: number;
   title_en: string;
@@ -38,6 +38,19 @@ export function useChapterEditor(initialChapter: Chapter) {
   const [titleVi, setTitleVi] = useState(initialChapter.title_vi);
   const [blocks, setBlocks] = useState<ContentBlock[]>(initialChapter.blocks);
   const [dirty, setDirty] = useState(false);
+
+  // Sync state when initialChapter changes (e.g. parent switches chapter)
+  useEffect(() => {
+    setTitleEn(initialChapter.title_en);
+    setTitleVi(initialChapter.title_vi);
+    setBlocks(initialChapter.blocks);
+    setDirty(false);
+  }, [
+    initialChapter._id,
+    initialChapter.title_en,
+    initialChapter.title_vi,
+    initialChapter.blocks,
+  ]);
 
   const updateBlock = (index: number, updatedBlock: ContentBlock) => {
     const next = [...blocks];
@@ -115,7 +128,9 @@ export function useWalkthroughEditor(courseSlug: string, slug: string) {
     id: Id<"chapters">,
     data: { title_en: string; title_vi: string; blocks: ContentBlock[] }
   ) => {
-    await updateChapterMutation({ id, ...data });
+    // Strip client-only _tempId before sending to backend
+    const cleanBlocks = data.blocks.map(({ _tempId, ...rest }) => rest);
+    await updateChapterMutation({ id, ...data, blocks: cleanBlocks });
   };
 
   const handleDeleteChapter = async (id: Id<"chapters">) => {

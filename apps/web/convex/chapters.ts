@@ -1,5 +1,10 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
+import {
+  knowledgeGraphValidator,
+  viz2dValidator,
+  viz3dValidator,
+} from "./schema";
 
 export const listByWalkthrough = query({
   args: { walkthroughId: v.id("walkthroughs") },
@@ -27,10 +32,10 @@ export const create = mutation({
     content_en: v.optional(v.string()),
     content_vi: v.optional(v.string()),
     blocks: v.optional(v.any()), // Array of ContentBlock
-    vizConfig: v.optional(v.any()),
-    knowledgeGraph: v.optional(v.any()),
-    visualization2dSchema: v.optional(v.any()),
-    visualization3dSchema: v.optional(v.any()),
+    vizConfig: v.optional(viz3dValidator),
+    knowledgeGraph: v.optional(knowledgeGraphValidator),
+    visualization2dSchema: v.optional(viz2dValidator),
+    visualization3dSchema: v.optional(viz3dValidator),
   },
   handler: async (ctx, args) => {
     return ctx.db.insert("chapters", args);
@@ -46,10 +51,10 @@ export const update = mutation({
     content_vi: v.optional(v.string()),
     blocks: v.optional(v.any()),
     order: v.optional(v.number()),
-    vizConfig: v.optional(v.any()),
-    knowledgeGraph: v.optional(v.any()),
-    visualization2dSchema: v.optional(v.any()),
-    visualization3dSchema: v.optional(v.any()),
+    vizConfig: v.optional(viz3dValidator),
+    knowledgeGraph: v.optional(knowledgeGraphValidator),
+    visualization2dSchema: v.optional(viz2dValidator),
+    visualization3dSchema: v.optional(viz3dValidator),
   },
   handler: async (ctx, { id, ...rest }) => {
     const updates: Record<string, unknown> = {};

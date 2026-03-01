@@ -122,11 +122,9 @@ export default function BlockEditor({
 
   useEffect(() => {
     async function initEditor() {
-      if (initializedRef.current || !ready) return;
-      initializedRef.current = true;
-
-      // Ensure we have something to render
+      // Ensure we have something to render before marking as initialized
       if (!initialContent) return;
+      initializedRef.current = true;
 
       try {
         const parsed = JSON.parse(initialContent);
@@ -142,7 +140,17 @@ export default function BlockEditor({
     }
 
     initEditor();
-  }, [editor, ready, initialContent]); // Added initialContent to sync if it's the first load
+  }, [editor, ready, initialContent]);
+
+  // Cleanup debounce timer on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimer.current !== null) {
+        window.clearTimeout(debounceTimer.current);
+        debounceTimer.current = null;
+      }
+    };
+  }, []);
 
   // 4. Create Slash Menu Item for the Alert Block
   const insertAlert = (editor: typeof schema.BlockNoteEditor) => {

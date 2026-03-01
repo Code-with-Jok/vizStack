@@ -2,14 +2,14 @@
 
 interface EmptyWalkthroughStateProps {
   message?: string;
-  canSeed: boolean;
+  canSeed?: boolean;
   onSeed?: () => void;
   seedLabel?: string;
 }
 
 export function EmptyWalkthroughState({
   message = "No walkthrough data found.",
-  canSeed,
+  canSeed = false,
   onSeed,
   seedLabel = "🌱 Seed content",
 }: EmptyWalkthroughStateProps) {
@@ -33,4 +33,3 @@ export function EmptyWalkthroughState({
     </div>
   );
 }
-

@@ -92,7 +92,7 @@ export function LearningSplitLayout({
                     contentWrapperClassName
                   )}
                 >
-                  <div className="max-w-[900px] mx-auto">{content}</div>
+                  <div className="mx-auto">{content}</div>
                 </div>
               </Allotment.Pane>
               {shouldShowViz && (

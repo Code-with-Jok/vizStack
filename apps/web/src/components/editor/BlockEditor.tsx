@@ -193,12 +193,12 @@ export function BlockEditor({
           </div>
 
           <div>
-            <label className="editor-label">Caption (EN)</label>
+            <label className="editor-label">Caption (VI)</label>
             <input
               className="editor-input text-xs py-1 px-2"
-              value={block.caption_en || ""}
+              value={block.caption_vi || ""}
               onChange={(e) =>
-                onChange({ ...block, caption_en: e.target.value })
+                onChange({ ...block, caption_vi: e.target.value })
               }
             />
           </div>

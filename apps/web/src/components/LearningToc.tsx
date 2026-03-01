@@ -25,10 +25,7 @@ export function LearningToc({
 }: LearningTocProps) {
   const style = width ? { width } : undefined;
   return (
-    <aside
-      className="walkthrough-toc hidden lg:flex lg:flex-col"
-      style={style}
-    >
+    <aside className="walkthrough-toc hidden lg:flex lg:flex-col" style={style}>
       <h4 className="walkthrough-toc-title">{label}</h4>
       <nav className="walkthrough-toc-list">
         {items.map((item, i) => {
@@ -60,6 +57,7 @@ export function LearningToc({
           return (
             <button
               key={item.id}
+              type="button"
               onClick={() => onSelect(i)}
               {...commonProps}
             >

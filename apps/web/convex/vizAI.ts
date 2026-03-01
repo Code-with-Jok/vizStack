@@ -95,12 +95,12 @@ const visualization3dSchema = z.object({
     ),
     connections: z.array(
       z.object({
-        fromIndex: z.number(),
-        toIndex: z.number(),
+        fromIndex: z.number().int().nonnegative(),
+        toIndex: z.number().int().nonnegative(),
       })
     ),
     cameraPosition: z
-      .array(z.number())
+      .tuple([z.number(), z.number(), z.number()])
       .describe("Camera position [x, y, z], usually [0, 1, 16]"),
   }),
 });
@@ -424,7 +424,7 @@ export const generateVizFromContent = action({
       id: chapter.walkthroughId,
     });
 
-    console.log({ chapter });
+    console.log(`[vizAI] Processing chapter: ${chapter._id}`);
 
     const moduleId = walkthrough?.courseSlug ?? "module";
     const moduleTitle = walkthrough?.courseSlug
@@ -460,7 +460,7 @@ export const generateVizFromContent = action({
     // -- Mock mode: match by single chapter title --
     if (USE_MOCK) {
       const mockKey = title || chapter.title_en;
-      const mockViz = MOCK_VIZ[mockKey] ?? MOCK_VIZ[title];
+      const mockViz = MOCK_VIZ[mockKey] ?? MOCK_VIZ[chapter.title_en];
       if (mockViz) {
         console.log(`[vizAI] Using mock for chapter: "${mockKey}"`);
         const { knowledgeGraph, visualization2dSchema, visualization3dSchema } =

@@ -18,9 +18,11 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"] },
     },
   ],
-  webServer: {
-    command: "pnpm dev -- --hostname 127.0.0.1 --port 3000",
-    url: baseURL,
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer: process.env.PLAYWRIGHT_BASE_URL
+    ? undefined
+    : {
+        command: "pnpm dev -- --hostname 127.0.0.1 --port 3000",
+        url: "http://127.0.0.1:3000",
+        reuseExistingServer: !process.env.CI,
+      },
 });

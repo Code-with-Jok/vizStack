@@ -2,10 +2,13 @@
 
 import dynamic from "next/dynamic";
 
+import type { Id } from "../../convex/_generated/dataModel";
+import type { Chapter } from "../hooks/useEditorModalState";
+
 const BlockEditor = dynamic(() => import("./BlockEditor"), { ssr: false });
 
 interface EditorMainFieldProps {
-  activeIdx: number | null;
+  activeId: Id<"chapters"> | null;
   vi: boolean;
   titleEn: string;
   setTitleEn: (v: string) => void;
@@ -21,12 +24,13 @@ interface EditorMainFieldProps {
   handleDelete: () => Promise<void>;
   handleSave: () => Promise<void>;
   saving: boolean;
-  selectChapter: (i: number) => void;
+  selectChapter: (id: Id<"chapters">) => void;
   dirty: boolean;
+  activeChapter?: Chapter;
 }
 
 export function EditorMainField({
-  activeIdx,
+  activeId,
   vi,
   titleEn,
   setTitleEn,
@@ -44,8 +48,9 @@ export function EditorMainField({
   saving,
   selectChapter,
   dirty,
+  activeChapter,
 }: EditorMainFieldProps) {
-  if (activeIdx === null) {
+  if (activeId === null) {
     return (
       <div className="flex items-center justify-center flex-1 text-text-strong text-[0.85rem]">
         ← {vi ? "Chọn chương để chỉnh sửa" : "Select a chapter to edit"}
@@ -101,7 +106,7 @@ export function EditorMainField({
         {/* MDEditor replaced by BlockEditor */}
         <div className="flex-1 min-h-[300px]">
           <BlockEditor
-            key={activeIdx + "-" + tab}
+            key={activeId + "-" + tab}
             initialContent={tab === "en" ? contentEn : contentVi}
             onChange={(val) => {
               if (tab === "en") setContentEn(val || "");
@@ -123,7 +128,7 @@ export function EditorMainField({
             {saving ? "⏳ Saving..." : "💾 Save Changes"}
           </button>
           <button
-            onClick={() => selectChapter(activeIdx)}
+            onClick={() => selectChapter(activeId)}
             className="btn-secondary py-2.5! px-5! text-[0.82rem]! rounded-[10px]!"
           >
             ↩ Discard

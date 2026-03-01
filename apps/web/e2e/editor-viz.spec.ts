@@ -12,13 +12,11 @@ test.describe("Visualization Updater Flow", () => {
 
     // Check if "Walkthrough Editor" text is visible
     const header = page.locator("h1.editor-title");
-    if (await header.isVisible()) {
-      await expect(header).toContainText("Walkthrough Editor");
+    await expect(header).toBeVisible();
+    await expect(header).toContainText("Walkthrough Editor");
 
-      // Check if Add Chapter button exists
-      const addBtn = page.locator("text=+ Add New Chapter");
-      await expect(addBtn).toBeVisible();
-    }
+    const addBtn = page.locator("text=+ Add New Chapter");
+    await expect(addBtn).toBeVisible();
   });
 
   // A more complete test would require mocking Convex or running against a seeded local backend

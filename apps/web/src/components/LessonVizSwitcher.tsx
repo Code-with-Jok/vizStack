@@ -29,6 +29,7 @@ interface LessonVizSwitcherProps {
   focusLabel?: string | null;
   onNodeFocusLabel?: (label: string) => void;
   initialMode?: VizMode;
+  mode?: VizMode;
   className?: string;
   vizKey?: string | number;
 }
@@ -71,6 +72,7 @@ export function LessonVizSwitcher({
   focusLabel,
   onNodeFocusLabel,
   initialMode = "3d",
+  mode: propMode,
   className,
   vizKey,
 }: LessonVizSwitcherProps) {
@@ -79,7 +81,10 @@ export function LessonVizSwitcher({
     () => viz2d ?? build2dFrom3d(resolved3d),
     [viz2d, resolved3d]
   );
-  const [mode, setMode] = useState<VizMode>(initialMode);
+  const [internalMode, setInternalMode] = useState<VizMode>(initialMode);
+  const mode = propMode ?? internalMode;
+  const setMode = propMode ? () => {} : setInternalMode;
+
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const mapTitle =
     knowledgeGraph?.lesson?.title ?? focusLabel ?? "Interactive Knowledge Map";

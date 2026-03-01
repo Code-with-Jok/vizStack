@@ -9,6 +9,8 @@ interface VizModeToggleProps {
   onModeHybrid?: () => void;
   className?: string;
   showLabels?: boolean;
+  is2dDisabled?: boolean;
+  is3dDisabled?: boolean;
 }
 
 /**
@@ -21,28 +23,39 @@ export function VizModeToggle({
   onModeHybrid,
   className,
   showLabels = true,
+  is2dDisabled = false,
+  is3dDisabled = false,
 }: VizModeToggleProps) {
+  const btnClass =
+    "rounded-md px-3 py-1.5 text-xs font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed";
+
   return (
-    <div className={`viz-mode-toggle ${className || ""}`}>
+    <div className={`viz-mode-toggle flex gap-2 ${className || ""}`}>
       <button
+        type="button"
         className={`${
           mode === "2d"
             ? "bg-cyan-500 text-white"
-            : "bg-neutral-50 text-neutral-700"
-        } rounded-md px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer`}
+            : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
+        } ${btnClass}`}
         onClick={onMode2D}
+        disabled={is2dDisabled}
+        aria-pressed={mode === "2d"}
         title="2D Knowledge Graph"
       >
         {showLabels ? "📊 2D" : "2D"}
       </button>
 
       <button
+        type="button"
         className={`${
           mode === "3d"
             ? "bg-cyan-500 text-white"
-            : "bg-neutral-50 text-neutral-700"
-        } rounded-md px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer`}
+            : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
+        } ${btnClass}`}
         onClick={onMode3D}
+        disabled={is3dDisabled}
+        aria-pressed={mode === "3d"}
         title="3D Interactive Scene"
       >
         {showLabels ? "🎯 3D" : "3D"}
@@ -50,12 +63,15 @@ export function VizModeToggle({
 
       {onModeHybrid && (
         <button
+          type="button"
           className={`${
             mode === "hybrid"
               ? "bg-cyan-500 text-white"
-              : "bg-neutral-50 text-neutral-700"
-          } rounded-md px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer`}
+              : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
+          } ${btnClass}`}
           onClick={onModeHybrid}
+          disabled={is2dDisabled || is3dDisabled}
+          aria-pressed={mode === "hybrid"}
           title="Hybrid 2D + 3D"
         >
           {showLabels ? "🔄 Hybrid" : "Hybrid"}

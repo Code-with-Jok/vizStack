@@ -150,15 +150,20 @@ function generate2DLayout(
   nodeCount: number,
   config?: { cellWidth?: number; cellHeight?: number }
 ): Array<[number, number]> {
-  const { cellWidth = 3.5, cellHeight = 2.5 } = config || {};
+  // Increased spacing from 3.5/2.5 to 5.5/4.0 to prevent overlaps
+  const { cellWidth = 5.5, cellHeight = 4.0 } = config || {};
   const cols = Math.ceil(Math.sqrt(nodeCount));
   const positions: Array<[number, number]> = [];
 
   for (let i = 0; i < nodeCount; i++) {
     const row = Math.floor(i / cols);
     const col = i % cols;
-    const x = col * cellWidth - (cols * cellWidth) / 2;
-    const y = row * cellHeight - (nodeCount / 2) * cellHeight;
+
+    // Add subtle random jitter to x-axis to prevent perfect vertical alignment
+    const jitter = (Math.random() - 0.5) * 0.8;
+
+    const x = col * cellWidth - (cols * cellWidth) / 2 + jitter;
+    const y = row * cellHeight - (Math.ceil(nodeCount / cols) / 2) * cellHeight;
     positions.push([x, y]);
   }
 
@@ -168,9 +173,7 @@ function generate2DLayout(
 /**
  * Generate 3D layout tree positions cho nodes
  */
-function generate3DLayout(
-  nodeCount: number
-): Array<[number, number, number]> {
+function generate3DLayout(nodeCount: number): Array<[number, number, number]> {
   const positions: Array<[number, number, number]> = [];
 
   if (nodeCount === 0) return positions;
@@ -180,15 +183,20 @@ function generate3DLayout(
 
   if (nodeCount === 1) return positions;
 
-  // Arrange remaining nodes in semi-circle around root
-  const radius = 4;
+  // Arrange remaining nodes in semi-circle around root with increased radius
+  const radius = 6;
   const angleStep = Math.PI / (nodeCount - 1);
 
   for (let i = 1; i < nodeCount; i++) {
     const angle = angleStep * i - Math.PI / 2;
-    const x = radius * Math.cos(angle);
-    const y = 2 - i * 1.5; // Gradually go down
-    const z = radius * Math.sin(angle);
+
+    // Add small random noise to make it less rigid
+    const noiseX = (Math.random() - 0.5) * 0.5;
+    const noiseZ = (Math.random() - 0.5) * 0.5;
+
+    const x = radius * Math.cos(angle) + noiseX;
+    const y = 2 - i * 2.0; // Increased vertical drop from 1.5 to 2.0
+    const z = radius * Math.sin(angle) + noiseZ;
     positions.push([x, y, z]);
   }
 
@@ -220,7 +228,10 @@ export function contentToVisualization(
   blocks: ContentBlock[] | undefined,
   locale: "en" | "vi" = "en",
   chapterTitle: string = "Lesson"
-): { viz2d: Viz2DSchema; viz3d: Viz3DSchema & { cameraPosition: [number, number, number] } } {
+): {
+  viz2d: Viz2DSchema;
+  viz3d: Viz3DSchema & { cameraPosition: [number, number, number] };
+} {
   const { concepts, codeExamples } = extractConcepts(blocks, locale);
 
   // Combine concepts và code examples, limit to ~12 nodes
@@ -311,7 +322,9 @@ function createDefaultViz2D(title: string): Viz2DSchema {
   };
 }
 
-function createDefaultViz3D(): Viz3DSchema & { cameraPosition: [number, number, number] } {
+function createDefaultViz3D(): Viz3DSchema & {
+  cameraPosition: [number, number, number];
+} {
   return {
     nodes: [
       {
@@ -334,7 +347,10 @@ function createDefaultViz3D(): Viz3DSchema & { cameraPosition: [number, number, 
 export function textToVisualization(
   text: string | undefined,
   title: string = "Lesson"
-): { viz2d: Viz2DSchema; viz3d: Viz3DSchema & { cameraPosition: [number, number, number] } } {
+): {
+  viz2d: Viz2DSchema;
+  viz3d: Viz3DSchema & { cameraPosition: [number, number, number] };
+} {
   if (!text) {
     return {
       viz2d: createDefaultViz2D(title),

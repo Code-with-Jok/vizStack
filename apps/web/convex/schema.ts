@@ -1,7 +1,7 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
-const vizNodeValidator = v.object({
+export const vizNodeValidator = v.object({
   id: v.string(),
   label: v.string(),
   x: v.number(),
@@ -12,12 +12,23 @@ const vizNodeValidator = v.object({
   height: v.optional(v.number()),
 });
 
-const vizConnectionValidator = v.object({
+export const vizConnectionValidator = v.object({
   fromIndex: v.number(),
   toIndex: v.number(),
 });
 
-const knowledgeGraphValidator = v.object({
+export const viz3dValidator = v.object({
+  nodes: v.array(vizNodeValidator),
+  connections: v.array(
+    v.object({
+      fromIndex: v.number(), // will be refined in vizAI.ts if needed, but schema.ts should be generic. Wait, user specifically said connections objects in 3d schema.
+      toIndex: v.number(),
+    })
+  ),
+  cameraPosition: v.array(v.number()),
+});
+
+export const knowledgeGraphValidator = v.object({
   module: v.object({
     id: v.string(),
     title: v.string(),
@@ -62,7 +73,7 @@ const viz2dEdgeValidator = v.object({
   label: v.optional(v.string()),
 });
 
-const viz2dValidator = v.object({
+export const viz2dValidator = v.object({
   nodes: v.array(viz2dNodeValidator),
   edges: v.array(viz2dEdgeValidator),
   viewport: v.optional(
@@ -83,7 +94,7 @@ export default defineSchema({
     description_vi: v.string(),
     order: v.number(),
     vizMode: v.optional(v.string()), // "data-driven" or "animated"
-    vizConfig: v.optional(v.any()),
+    vizConfig: v.optional(viz3dValidator),
   }).index("by_course_slug", ["courseSlug", "slug"]),
 
   chapters: defineTable({
@@ -112,21 +123,9 @@ export default defineSchema({
       )
     ),
     vizMode: v.optional(v.string()), // "3d" | "2d" | "hybrid" - default: "3d"
-    vizConfig: v.optional(
-      v.object({
-        nodes: v.array(vizNodeValidator),
-        connections: v.array(vizConnectionValidator),
-        cameraPosition: v.array(v.number()),
-      })
-    ),
+    vizConfig: v.optional(viz3dValidator),
     knowledgeGraph: v.optional(knowledgeGraphValidator),
     visualization2dSchema: v.optional(viz2dValidator),
-    visualization3dSchema: v.optional(
-      v.object({
-        nodes: v.array(vizNodeValidator),
-        connections: v.array(vizConnectionValidator),
-        cameraPosition: v.array(v.number()),
-      })
-    ),
+    visualization3dSchema: v.optional(viz3dValidator),
   }).index("by_walkthrough", ["walkthroughId", "order"]),
 });

@@ -46,13 +46,17 @@ export function useVisualizationMode(initialMode: VizMode = "3d") {
 /**
  * Hook để persist vizMode vào localStorage
  */
+const VIZ_MODES: VizMode[] = ["2d", "3d", "hybrid"];
+const isValidVizMode = (value: any): value is VizMode =>
+  VIZ_MODES.includes(value);
+
 export function usePersistedVisualizationMode(
   storageKey: string = "lesson-viz-mode"
 ) {
   const [vizMode, setVizMode] = useState<VizMode>(() => {
     if (typeof window === "undefined") return "3d";
     const stored = localStorage.getItem(storageKey);
-    return (stored as VizMode) || "3d";
+    return isValidVizMode(stored) ? stored : "3d";
   });
 
   const updateVizMode = useCallback(

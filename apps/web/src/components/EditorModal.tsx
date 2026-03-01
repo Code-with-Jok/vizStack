@@ -31,15 +31,23 @@ export function EditorModal({
   const backdropRef = useRef<HTMLDivElement>(null);
   const isMobile = useMediaQuery("(max-width: 1024px)");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const manualSidebarToggle = useRef<boolean | null>(null);
 
-  // Close sidebar by default on mobile
+  // Close sidebar by default on mobile, but respect manual toggle
   useEffect(() => {
+    if (manualSidebarToggle.current !== null) return;
     if (isMobile) setIsSidebarOpen(false);
     else setIsSidebarOpen(true);
   }, [isMobile]);
 
+  const toggleSidebar = () => {
+    const next = !isSidebarOpen;
+    setIsSidebarOpen(next);
+    manualSidebarToggle.current = next;
+  };
+
   const {
-    activeIdx,
+    activeId,
     titleEn,
     setTitleEn,
     titleVi,
@@ -173,7 +181,7 @@ export function EditorModal({
         >
           {isMobile && (
             <button
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              onClick={toggleSidebar}
               className="p-2 mr-2 text-text-secondary hover:bg-gray-100 rounded-lg transition-colors"
             >
               {isSidebarOpen ? "✕" : "☰"}
@@ -224,9 +232,9 @@ export function EditorModal({
               </div>
               <EditorSidebar
                 sorted={sorted}
-                activeIdx={activeIdx}
-                selectChapter={(idx) => {
-                  selectChapter(idx);
+                activeId={activeId}
+                selectChapter={(id) => {
+                  selectChapter(id);
                   if (isMobile) setIsSidebarOpen(false);
                 }}
                 aiStatus={aiStatus}
@@ -236,7 +244,7 @@ export function EditorModal({
             </div>
           )}
           <EditorMainField
-            activeIdx={activeIdx}
+            activeId={activeId}
             vi={vi}
             titleEn={titleEn}
             setTitleEn={setTitleEn}
@@ -254,6 +262,7 @@ export function EditorModal({
             saving={saving}
             selectChapter={selectChapter}
             dirty={dirty}
+            activeChapter={sorted.find((c) => c._id === activeId)}
           />
         </div>
       </div>

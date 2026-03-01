@@ -206,6 +206,14 @@ export function GenericViz2D({
                 onMouseEnter={() => onNodeHover?.(node.id)}
                 onMouseLeave={() => onNodeHover?.(null)}
                 role={onNodeSelect ? "button" : undefined}
+                tabIndex={onNodeSelect ? 0 : undefined}
+                onKeyDown={(e) => {
+                  if (onNodeSelect && (e.key === "Enter" || e.key === " ")) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onNodeSelect(node.id);
+                  }
+                }}
               >
                 <rect
                   x={node.px - node.width / 2}

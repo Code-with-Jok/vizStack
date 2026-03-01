@@ -53,6 +53,8 @@ export function ArticlePageWith2D3D({
           onMode3D={() => setVizMode("3d")}
           onModeHybrid={() => setVizMode("hybrid")}
           showLabels={true}
+          is2dDisabled={!visualization2d}
+          is3dDisabled={!visualization3d}
         />
         <div className="flex-1 overflow-auto">
           <VisualizationRenderer

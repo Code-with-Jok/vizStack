@@ -94,8 +94,8 @@ function DataCloud() {
   const [positions, colors] = useMemo(() => {
     const p = new Float32Array(5000 * 3);
     const c = new Float32Array(5000 * 3);
-    const colorA = new THREE.Color(themeColors.black);
-    const colorB = new THREE.Color(themeColors.black);
+    const colorA = new THREE.Color(themeColors.accentCyanBright);
+    const colorB = new THREE.Color(themeColors.accentOrangeWarm);
 
     for (let i = 0; i < 5000; i++) {
       p[i * 3] = (Math.random() - 0.5) * 60;
@@ -166,9 +166,19 @@ function Connections() {
     return new THREE.BufferGeometry().setFromPoints(linePoints);
   }, [linePoints]);
 
+  useEffect(() => {
+    return () => {
+      geometry.dispose();
+    };
+  }, [geometry]);
+
   return (
     <lineSegments geometry={geometry}>
-      <lineBasicMaterial color={themeColors.accentCyan} transparent opacity={0.1} />
+      <lineBasicMaterial
+        color={themeColors.accentCyan}
+        transparent
+        opacity={0.1}
+      />
     </lineSegments>
   );
 }
@@ -193,7 +203,7 @@ export function HeroBackground() {
         <pointLight
           position={[10, 10, 10]}
           intensity={1.5}
-          color={themeColors.black}
+          color={themeColors.accentCyanBright}
         />
         <pointLight
           position={[-10, -10, -10]}
@@ -204,9 +214,9 @@ export function HeroBackground() {
         <DataCloud />
         <Connections />
 
-        {LOGOS.map((logo, i) => (
+        {LOGOS.map((logo) => (
           <InteractiveLogo
-            key={i}
+            key={logo.name}
             name={logo.name}
             position={logo.pos as [number, number, number]}
           />

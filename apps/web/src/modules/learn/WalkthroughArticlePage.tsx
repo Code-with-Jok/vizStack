@@ -108,25 +108,15 @@ export function WalkthroughArticlePage({
     return textToVisualization(textContent, activeChapter.title_en);
   }, [activeChapter, vi]);
 
-  if (walkthrough === undefined || chapters === undefined) {
-    return <FullPageLoader />;
-  }
-
-  if (!walkthrough || !chapters) {
-    return (
-      <div className="flex items-center justify-center h-[calc(100vh-48px)] text-text-muted">
-        Walkthrough not found.
-      </div>
-    );
-  }
-
-  type Chapter = NonNullable<typeof chapters>[number];
-
   useEffect(() => {
-    if (activeSectionIndex >= sectionChapters.length) {
+    if (
+      chapters &&
+      activeSectionIndex >= sectionChapters.length &&
+      sectionChapters.length > 0
+    ) {
       setActiveSectionIndex(0);
     }
-  }, [activeSectionIndex, sectionChapters.length]);
+  }, [activeSectionIndex, sectionChapters.length, chapters]);
 
   const sections: ArticleSection[] = useMemo(
     () =>
@@ -148,7 +138,6 @@ export function WalkthroughArticlePage({
           : undefined,
         content: (
           <div className="flex flex-col relative group">
-            {/* Nút Auto-Generate AI đã được di dời sang component EditorModal chung */}
             <BlockEditor
               editable={isAdmin}
               initialContent={vi ? ch.content_vi : ch.content_en}
@@ -165,6 +154,20 @@ export function WalkthroughArticlePage({
       })),
     [sectionChapters, chapterTitleDrafts, vi, isAdmin, debouncedUpdateChapter]
   );
+
+  if (walkthrough === undefined || chapters === undefined) {
+    return <FullPageLoader />;
+  }
+
+  if (!walkthrough || !chapters) {
+    return (
+      <div className="flex items-center justify-center h-[calc(100vh-48px)] text-text-muted">
+        Walkthrough not found.
+      </div>
+    );
+  }
+
+  type Chapter = NonNullable<typeof chapters>[number];
 
   const baseWalkthroughTitle = vi ? walkthrough.title_vi : walkthrough.title_en;
   const effectiveWalkthroughTitle =
@@ -201,6 +204,7 @@ export function WalkthroughArticlePage({
       viz2d={viz2dSchema}
       knowledgeGraph={knowledgeGraph}
       focusLabel={focusLabel}
+      mode="2d"
     />
   ) : null;
 

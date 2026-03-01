@@ -147,11 +147,6 @@ export function ArticlePage({
               description
             )}
           </p>
-          {vizUrl && (
-            <a href={vizUrl} className="viz-button-3d inline-flex mt-4">
-              {vizLabel}
-            </a>
-          )}
         </header>
 
         {sections[clampedIndex] && (

@@ -136,6 +136,7 @@
     var(--color-accent-cyan),
     var(--color-accent-orange-warm)
   );
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -660,7 +661,14 @@
 
 .viz-2d-node {
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.viz-2d-node:hover,
+.viz-2d-node-selected {
+  transform: translateY(-4px);
 }
 
 .viz-2d-node rect {
@@ -686,6 +694,7 @@
   font-size: 12px;
   font-weight: 600;
   pointer-events: none;
+  transition: opacity 0.5s ease;
 }
 
 .viz-2d-edges {

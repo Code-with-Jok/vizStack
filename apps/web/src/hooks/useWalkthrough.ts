@@ -20,12 +20,14 @@ export function useWalkthrough(courseSlug: string, slug: string) {
     walkthrough ? { walkthroughId: walkthrough._id } : "skip"
   );
 
-  const isLoading = walkthrough === undefined || chapters === undefined;
+  const isLoading =
+    walkthrough === undefined ||
+    (walkthrough !== null && chapters === undefined);
 
   const sortedChapters =
     chapters && !isLoading
       ? [...chapters].sort((a, b) => a.order - b.order)
-      : chapters ?? undefined;
+      : ((chapters ?? undefined) as Chapter[] | undefined);
 
   return {
     walkthrough,
@@ -34,4 +36,3 @@ export function useWalkthrough(courseSlug: string, slug: string) {
     hasWalkthrough: !!walkthrough,
   };
 }
-
