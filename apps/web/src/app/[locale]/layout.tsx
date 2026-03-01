@@ -18,8 +18,6 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
 });
 
-
-
 export default async function LocaleLayout({
   children,
   params,
@@ -35,6 +33,7 @@ export default async function LocaleLayout({
       <html
         lang={locale}
         className={`${inter.variable} ${jetbrainsMono.variable}`}
+        suppressHydrationWarning
       >
         <head>
           <title>VizStack — Interactive 3D Tech Education</title>
@@ -43,7 +42,7 @@ export default async function LocaleLayout({
             content="Learn tech stacks through interactive 3D visualizations. Master Next.js, React, Node.js and more by seeing how they work from the inside."
           />
         </head>
-        <body>
+        <body suppressHydrationWarning>
           <ConvexClientProvider>
             <NextIntlClientProvider messages={messages}>
               <Navbar />

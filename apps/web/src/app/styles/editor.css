@@ -1,0 +1,242 @@
+/* ─── Editor Layout Classes ─── */
+.editor-main-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-editor-bg);
+  height: 100%;
+  overflow: hidden;
+}
+
+.editor-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: visible;
+  padding: 24px 24px 24px 34px; /* Reduced left padding to bring handles closer */
+  display: flex;
+  flex-direction: column;
+  position: relative; /* Ensure it's a positioning parent */
+}
+
+.editor-input-label {
+  font-size: 0.7rem;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.editor-text-input {
+  width: 100%;
+  padding: 10px 14px;
+  background-color: var(--color-editor-tab-bg);
+  border: 1px solid var(--color-editor-border);
+  border-radius: 10px;
+  color: var(--color-text-primary);
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.editor-text-input:focus {
+  border-color: var(--color-accent-cyan);
+}
+
+.editor-tab-button {
+  padding: 6px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+}
+
+.editor-tab-button-active {
+  border: 1px solid var(--color-accent-cyan);
+  background-color: color-mix(
+    in srgb,
+    var(--color-accent-cyan) 10%,
+    transparent
+  );
+  color: var(--color-accent-teal-strong);
+  font-weight: 700;
+}
+
+.editor-tab-button-inactive {
+  border: 1px solid var(--color-editor-border);
+  background-color: var(--color-editor-tab-bg);
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.editor-delete-button {
+  margin-left: auto;
+  padding: 6px 14px;
+  background: color-mix(in srgb, var(--color-accent-red) 5%, transparent);
+  color: var(--color-accent-red);
+  border: 1px solid color-mix(in srgb, var(--color-accent-red) 20%, transparent);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.editor-delete-button:hover {
+  background: color-mix(in srgb, var(--color-accent-red) 10%, transparent);
+}
+
+.editor-footer-save-bar {
+  padding: 16px 24px;
+  background-color: var(--color-save-footer-bg);
+  border-top: 1px solid var(--color-save-footer-border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+  z-index: 50;
+  min-height: 70px;
+}
+
+.editor-unsaved-warning {
+  font-size: 0.75rem;
+  color: var(--color-accent-orange);
+  font-weight: 600;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ─── BlockNote Overrides & Sync ──────────────── */
+.bn-block-content[data-content-type="codeBlock"] {
+  background: var(--color-code-bg-light) !important;
+  color: var(--color-code-text-light) !important;
+  border-radius: 8px !important;
+  position: relative !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+  padding-bottom: 20px !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid var(--color-border) !important;
+  overflow: hidden;
+}
+
+.bn-block-content[data-content-type="codeBlock"] select {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  z-index: 10;
+  background: var(--color-white) !important;
+  color: var(--color-text-secondary) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 0.7rem;
+  font-family: var(--font-mono) !important;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.bn-block-content[data-content-type="codeBlock"] .ProseMirror,
+.bn-block-content[data-content-type="codeBlock"] code,
+.bn-block-content[data-content-type="codeBlock"] pre {
+  color: var(--color-text-primary) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.88rem !important;
+  line-height: 1.6 !important;
+  caret-color: var(--color-accent-cyan) !important;
+  outline: none !important;
+}
+
+/* ─── Transparency & Side Menu Handle ──────────────── */
+.editor-main-container {
+  background-color: var(--color-editor-bg);
+}
+
+/* Let BlockNote handle its own backgrounds to avoid drag-and-drop artifacts */
+.bn-container,
+.bn-editor {
+  min-height: 100%;
+  overflow: visible;
+}
+
+/* Force BlockNote Side Menu (Drag handle) visibility but keep it light */
+.bn-side-menu {
+  opacity: 1 !important;
+  visibility: visible !important;
+  z-index: 40 !important;
+  display: flex !important;
+  margin-left: -10px !important; /* Pull closer to content */
+  pointer-events: auto !important;
+}
+
+/* Make the 6-dots handle more prominent and easier to hit */
+.bn-side-menu [data-test="side-menu-drag-handle"] {
+  background: var(--color-white) !important;
+  border: 1px solid var(--color-accent-cyan) !important;
+  border-radius: 6px !important;
+  box-shadow: 0 4px 12px rgba(86, 217, 209, 0.2) !important;
+  width: 28px !important;
+  height: 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: grab !important;
+  color: var(--color-accent-cyan) !important;
+  transition: all 0.2s ease !important;
+  pointer-events: auto !important;
+}
+
+.bn-side-menu [data-test="side-menu-drag-handle"]:hover {
+  background: var(--color-accent-cyan) !important;
+  color: var(--color-white) !important;
+  transform: scale(1.1);
+}
+
+.bn-side-menu [data-test="side-menu-drag-handle"]:active {
+  cursor: grabbing !important;
+  transform: scale(0.95);
+}
+
+/* Keep blocks visible after drag/drop and during focus changes */
+.bn-block,
+.bn-block-content {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.bn-block-content {
+  display: block !important;
+}
+
+.bn-block[data-is-dragging="true"] .bn-block-content,
+.bn-block[data-dragging="true"] .bn-block-content,
+.bn-block.is-dragging .bn-block-content {
+  opacity: 1 !important;
+}
+
+.bn-block-content[data-content-type="callout"] {
+  border-radius: 8px !important;
+  padding: 16px !important;
+}
+
+/* ─── Allotment Customization ──────────────── */
+[class*="allotment-module_sash"] {
+  --sash-size: 4px;
+  --sash-hover-size: 4px;
+}
+
+[class*="allotment-module_sash"]:after {
+  background-color: var(--color-border) !important;
+  transition: background-color 0.2s ease !important;
+}
+
+[class*="allotment-module_sash"]:hover:after,
+[class*="allotment-module_sash"][data-active="true"]:after {
+  background-color: var(--color-accent-cyan) !important;
+}

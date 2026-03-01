@@ -1,6 +1,6 @@
 "use client";
 
-import { Scene, AnimatedNode, ConnectionLine } from "@viz/three-engine";
+import { SteppedVizBase } from "./utils/SteppedVizBase";
 
 const NODES = [
   {
@@ -107,35 +107,16 @@ interface RenderingVizProps {
 }
 
 export function RenderingViz({ currentStep }: RenderingVizProps) {
-  const activeNodes = STEP_NODE_MAP[currentStep] || [];
-  const activeConns = STEP_CONN_MAP[currentStep] || [];
-
   return (
-    <Scene cameraPosition={[0, -1, 14]} enableOrbit={true}>
-      <gridHelper args={[20, 20, "#1a1a2e", "#1a1a2e"]} position={[0, -7, 0]} />
-      {NODES.map((node, i) => (
-        <AnimatedNode
-          key={node.id}
-          position={node.pos}
-          label={node.label}
-          color={node.color}
-          glowColor={node.glow}
-          size={[2.5, 0.8, 0.2]}
-          active={currentStep === 0 || activeNodes.includes(node.id)}
-          highlighted={activeNodes.includes(node.id) && currentStep > 0}
-          delay={i * 0.12}
-        />
-      ))}
-      {CONNECTIONS.map((conn, i) => (
-        <ConnectionLine
-          key={i}
-          start={NODES[conn.from].pos}
-          end={NODES[conn.to].pos}
-          color={NODES[conn.to].glow}
-          active={activeConns.includes(i)}
-          animated={activeConns.includes(i)}
-        />
-      ))}
-    </Scene>
+    <SteppedVizBase
+      currentStep={currentStep}
+      nodes={NODES}
+      connections={CONNECTIONS}
+      stepMap={STEP_NODE_MAP}
+      connMap={STEP_CONN_MAP}
+      cameraPosition={[0, -1, 14]}
+      gridPosition={[0, -7, 0]}
+      nodeSize={[2.5, 0.8, 0.2]}
+    />
   );
 }

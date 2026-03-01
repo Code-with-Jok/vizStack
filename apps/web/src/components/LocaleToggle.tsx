@@ -3,6 +3,7 @@
 import { useLocale } from "next-intl";
 import { useRouter, usePathname } from "next/navigation";
 import { useState } from "react";
+import { cn } from "@/lib/cn";
 
 export function LocaleToggle() {
   const locale = useLocale();
@@ -25,76 +26,35 @@ export function LocaleToggle() {
   };
 
   return (
-    <div style={{ position: "relative" }}>
+    <div className="locale-toggle-root">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "6px",
-          padding: "6px 14px",
-          background: "var(--color-bg-card)",
-          border: "1px solid var(--color-border)",
-          borderRadius: "8px",
-          color: "var(--color-text-primary)",
-          cursor: "pointer",
-          fontSize: "0.8rem",
-          fontWeight: 500,
-          transition: "all 0.2s ease",
-        }}
+        className="locale-toggle-button"
       >
-        <span style={{ fontSize: "1rem" }}>{current.flag}</span>
+        <span className="locale-toggle-flag">{current.flag}</span>
         <span>{current.code.toUpperCase()}</span>
         <span
-          style={{
-            fontSize: "0.6rem",
-            transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
-            transition: "transform 0.2s ease",
-          }}
+          className={cn(
+            "locale-toggle-chevron",
+            isOpen && "locale-toggle-chevron-open"
+          )}
         >
           ▼
         </span>
       </button>
 
       {isOpen && (
-        <div
-          style={{
-            position: "absolute",
-            top: "100%",
-            right: 0,
-            marginTop: "4px",
-            background: "var(--color-bg-secondary)",
-            border: "1px solid var(--color-border)",
-            borderRadius: "8px",
-            overflow: "hidden",
-            zIndex: 100,
-            minWidth: "140px",
-            boxShadow: "0 8px 30px rgba(0,0,0,0.4)",
-          }}
-        >
+        <div className="locale-toggle-menu">
           {locales.map((l) => (
             <button
               key={l.code}
               onClick={() => switchLocale(l.code)}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                width: "100%",
-                padding: "10px 14px",
-                background:
-                  l.code === locale ? "var(--color-glow-cyan)" : "transparent",
-                border: "none",
-                color:
-                  l.code === locale
-                    ? "var(--color-accent-cyan)"
-                    : "var(--color-text-secondary)",
-                cursor: "pointer",
-                fontSize: "0.85rem",
-                fontWeight: l.code === locale ? 600 : 400,
-                transition: "background 0.15s ease",
-                textAlign: "left",
-              }}
+              className={cn(
+                "locale-toggle-menu-item",
+                l.code === locale
+                  ? "locale-toggle-menu-item-active"
+                  : "locale-toggle-menu-item-inactive"
+              )}
             >
               <span>{l.flag}</span>
               <span>{l.label}</span>

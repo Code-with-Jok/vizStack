@@ -15,6 +15,13 @@ export const getBySlug = query({
   },
 });
 
+export const getById = query({
+  args: { id: v.id("walkthroughs") },
+  handler: async (ctx, { id }) => {
+    return ctx.db.get(id);
+  },
+});
+
 export const listByCourse = query({
   args: { courseSlug: v.string() },
   handler: async (ctx, { courseSlug }) => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { Scene, AnimatedNode, ConnectionLine } from "@viz/three-engine";
+import { SteppedVizBase } from "./utils/SteppedVizBase";
 
 const NODES = [
   {
@@ -140,38 +140,24 @@ const STEP_CONN_MAP: Record<number, number[]> = {
 
 interface ComponentTreeVizProps {
   currentStep: number;
+  translations?: Record<string, string>;
 }
 
-export function ComponentTreeViz({ currentStep }: ComponentTreeVizProps) {
-  const activeNodes = STEP_NODE_MAP[currentStep] || [];
-  const activeConns = STEP_CONN_MAP[currentStep] || [];
-
+export function ComponentTreeViz({
+  currentStep,
+  translations,
+}: ComponentTreeVizProps) {
   return (
-    <Scene cameraPosition={[0, 1, 16]} enableOrbit={true}>
-      <gridHelper args={[24, 24, "#1a1a2e", "#1a1a2e"]} position={[0, -6, 0]} />
-      {NODES.map((node, i) => (
-        <AnimatedNode
-          key={node.id}
-          position={node.pos}
-          label={node.label}
-          color={node.color}
-          glowColor={node.glow}
-          size={[2.8, 0.9, 0.2]}
-          active={currentStep === 0 || activeNodes.includes(node.id)}
-          highlighted={activeNodes.includes(node.id) && currentStep > 0}
-          delay={i * 0.1}
-        />
-      ))}
-      {CONNECTIONS.map((conn, i) => (
-        <ConnectionLine
-          key={i}
-          start={NODES[conn.from].pos}
-          end={NODES[conn.to].pos}
-          color={NODES[conn.to].glow}
-          active={activeConns.includes(i)}
-          animated={activeConns.includes(i)}
-        />
-      ))}
-    </Scene>
+    <SteppedVizBase
+      currentStep={currentStep}
+      nodes={NODES}
+      connections={CONNECTIONS}
+      stepMap={STEP_NODE_MAP}
+      connMap={STEP_CONN_MAP}
+      cameraPosition={[0, 1, 16]}
+      gridPosition={[0, -6, 0]}
+      nodeSize={[2.8, 0.9, 0.2]}
+      translations={translations}
+    />
   );
 }
